@@ -24,7 +24,7 @@ ARG WAIT4X_VERSION=3.7.1
 # renovate: datasource=github-releases depName=aws/aws-cli versioning=semver-coerced
 ARG AWS_CLI_VERSION=2.36.33
 # renovate: datasource=github-releases depName=cli/cli versioning=semver-coerced
-ARG GITHUB_CLI_VERSION=2.97.0
+ARG GITHUB_CLI_VERSION=2.98.0
 
 # AI agent CLIs
 # renovate: datasource=npm depName=@openai/codex
