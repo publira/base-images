@@ -1,0 +1,10 @@
+{
+  "name": "Base images",
+  "image": "mcr.microsoft.com/devcontainers/base:2-trixie@sha256:b8c3669fb4cc652621b3386517c40ab3e151e827de958d6fe75528798ffb5727",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:4.1.0": {
+      "moby": false,
+      "version": "29.3.1"
+    }
+  }
+}
