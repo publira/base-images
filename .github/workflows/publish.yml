@@ -55,5 +55,10 @@ jobs:
             ghcr.io/${{ github.repository }}/${{ matrix.image }}:latest
             ghcr.io/${{ github.repository }}/${{ matrix.image }}:${{ steps.tags.outputs.date }}
             ghcr.io/${{ github.repository }}/${{ matrix.image }}:${{ steps.tags.outputs.date }}-${{ github.run_number }}
+          labels: |
+            org.opencontainers.image.title=Publira development image
+            org.opencontainers.image.description=Development base image for Publira Dev Containers.
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.licenses=Apache-2.0
           cache-from: type=gha,scope=${{ matrix.image }}
           cache-to: type=gha,mode=max,scope=${{ matrix.image }}
