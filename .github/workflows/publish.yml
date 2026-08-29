@@ -9,18 +9,43 @@ on:
   workflow_dispatch:
 
 jobs:
-  publish:
-    name: Publish ${{ matrix.image }}
-    runs-on: ubuntu-latest
+  prepare:
+    name: Prepare publication
+    runs-on: ubuntu-24.04
+    permissions: {}
+    outputs:
+      date: ${{ steps.tags.outputs.date }}
+      started-at: ${{ steps.tags.outputs.started-at }}
+    steps:
+      - name: Generate image tags
+        id: tags
+        run: |
+          echo "date=$(date --utc +%Y.%m.%d)" >> "$GITHUB_OUTPUT"
+          echo "started-at=$(date --utc +%s)" >> "$GITHUB_OUTPUT"
+
+  build:
+    name: Build ${{ matrix.image }} (${{ matrix.platform }})
+    needs: prepare
+    runs-on: ${{ matrix.runner }}
     permissions:
       contents: read
       packages: write
     strategy:
+      fail-fast: false
       matrix:
         include:
           - image: publira-dev
             context: dev
             file: dev/Dockerfile
+            platform: linux/amd64
+            platform-id: amd64
+            runner: ubuntu-24.04
+          - image: publira-dev
+            context: dev
+            file: dev/Dockerfile
+            platform: linux/arm64
+            platform-id: arm64
+            runner: ubuntu-24.04-arm
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -32,33 +57,127 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@96fe6ef7f33517b61c61be40b68a1882f3264fb8 # v4.2.0
-        with:
-          platforms: arm64
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@37fe631027851001ddb9b187196cc803df7f5f0e # v4.3.0
 
-      - name: Generate image tags
-        id: tags
-        run: echo "date=$(date --utc +%Y.%m.%d)" >> "$GITHUB_OUTPUT"
-
-      - name: Build and publish
+      - name: Build and push by digest
+        id: build
         uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
         with:
           context: ${{ matrix.context }}
           file: ${{ matrix.file }}
-          push: true
-          platforms: linux/amd64,linux/arm64
-          tags: |
-            ghcr.io/${{ github.repository }}/${{ matrix.image }}:latest
-            ghcr.io/${{ github.repository }}/${{ matrix.image }}:${{ steps.tags.outputs.date }}
-            ghcr.io/${{ github.repository }}/${{ matrix.image }}:${{ steps.tags.outputs.date }}-${{ github.run_number }}
+          platforms: ${{ matrix.platform }}
+          outputs: type=image,name=ghcr.io/${{ github.repository }}/${{ matrix.image }},push-by-digest=true,name-canonical=true,push=true
           labels: |
             org.opencontainers.image.title=Publira development image
             org.opencontainers.image.description=Development base image for Publira Dev Containers.
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.licenses=Apache-2.0
-          cache-from: type=gha,scope=${{ matrix.image }}
-          cache-to: type=gha,mode=max,scope=${{ matrix.image }}
+          # A platform-specific cache avoids concurrent writes to one GHA cache scope.
+          cache-from: type=gha,scope=${{ matrix.image }}-${{ matrix.platform-id }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.image }}-${{ matrix.platform-id }}
+
+      - name: Export digest
+        run: |
+          mkdir -p "${{ runner.temp }}/digests"
+          touch "${{ runner.temp }}/digests/${{ steps.build.outputs.digest }}"
+
+      - name: Upload digest
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: digests-${{ matrix.image }}-${{ matrix.platform-id }}
+          path: ${{ runner.temp }}/digests/*
+          if-no-files-found: error
+          retention-days: 1
+
+  merge:
+    name: Publish ${{ matrix.image }} manifest
+    needs: [prepare, build]
+    runs-on: ubuntu-24.04
+    permissions:
+      packages: write
+    strategy:
+      matrix:
+        include:
+          - image: publira-dev
+    steps:
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@37fe631027851001ddb9b187196cc803df7f5f0e # v4.3.0
+
+      - name: Download digests
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v5.0.0
+        with:
+          pattern: digests-${{ matrix.image }}-*
+          merge-multiple: true
+          path: ${{ runner.temp }}/digests
+
+      - name: Create and push manifest
+        working-directory: ${{ runner.temp }}/digests
+        run: |
+          image_refs=()
+          for digest in *; do
+            image_refs+=("ghcr.io/${{ github.repository }}/${{ matrix.image }}@${digest}")
+          done
+          docker buildx imagetools create \
+            --tag "ghcr.io/${{ github.repository }}/${{ matrix.image }}:latest" \
+            --tag "ghcr.io/${{ github.repository }}/${{ matrix.image }}:${{ needs.prepare.outputs.date }}" \
+            --tag "ghcr.io/${{ github.repository }}/${{ matrix.image }}:${{ needs.prepare.outputs.date }}-${{ github.run_number }}" \
+            "${image_refs[@]}"
+
+      - name: Verify multi-platform manifest
+        run: |
+          docker buildx imagetools inspect --raw \
+            "ghcr.io/${{ github.repository }}/${{ matrix.image }}:${{ needs.prepare.outputs.date }}-${{ github.run_number }}" \
+            | jq --exit-status '
+                [.manifests[] | select(.platform.os == "linux") | .platform.architecture]
+                | sort == ["amd64", "arm64"]
+              '
+
+      - name: Record publication time
+        run: |
+          started_at="${{ needs.prepare.outputs.started-at }}"
+          completed_at="$(date --utc +%s)"
+          elapsed_seconds=$((completed_at - started_at))
+          {
+            echo '## Publication time'
+            echo
+            echo "- Started (UTC): $(date --utc --date="@${started_at}" --iso-8601=seconds)"
+            echo "- Completed (UTC): $(date --utc --date="@${completed_at}" --iso-8601=seconds)"
+            echo "- Elapsed: ${elapsed_seconds} seconds"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  verify:
+    name: Verify ${{ matrix.image }} pull (${{ matrix.platform }})
+    needs: [prepare, merge]
+    runs-on: ${{ matrix.runner }}
+    permissions:
+      packages: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - image: publira-dev
+            platform: linux/amd64
+            runner: ubuntu-24.04
+          - image: publira-dev
+            platform: linux/arm64
+            runner: ubuntu-24.04-arm
+    steps:
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull published image
+        run: |
+          docker pull --platform "${{ matrix.platform }}" \
+            "ghcr.io/${{ github.repository }}/${{ matrix.image }}:${{ needs.prepare.outputs.date }}-${{ github.run_number }}"
