@@ -15,6 +15,8 @@ copyright notices for the directly redistributed MIT-licensed tools follow.
   Dale Hui
 - GitHub CLI: Copyright (c) 2019 GitHub Inc.
 - Node.js: Copyright Node.js contributors.
+- pnpm: Copyright (c) 2015-2016 Rico Sta. Cruz and other contributors and
+  Copyright (c) 2016-2026 Zoltan Kochan and other contributors
 
 ## Base image and operating-system packages
 
@@ -43,6 +45,7 @@ copyright notices for the directly redistributed MIT-licensed tools follow.
 | wait4x | 3.7.1 | Apache-2.0 | <https://github.com/wait4x/wait4x/tree/v3.7.1> |
 | AWS CLI | 2.36.33 | Apache-2.0 and third-party notices | <https://github.com/aws/aws-cli/tree/2.36.33> |
 | GitHub CLI | 2.97.0 | MIT | <https://github.com/cli/cli/tree/v2.97.0> |
+| pnpm | 11.25.0 | MIT | <https://github.com/pnpm/pnpm/tree/v11.25.0> |
 
 ## AI agent CLIs
 

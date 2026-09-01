@@ -9,7 +9,7 @@ This project is licensed under the [Apache License 2.0](LICENSE).
 
 - Go development environment, Flutter SDK, PostgreSQL client, and the Go CLIs
   used by the project
-- Node.js, AWS CLI, GitHub CLI, Codex, and Grok Build
+- Node.js with a preinstalled pnpm, AWS CLI, GitHub CLI, Codex, and Grok Build
 
 Every tool is installed directly by
 [`dev/Dockerfile`](dev/Dockerfile). The image can be consumed
