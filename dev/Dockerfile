@@ -25,6 +25,8 @@ ARG WAIT4X_VERSION=3.7.1
 ARG AWS_CLI_VERSION=2.36.33
 # renovate: datasource=github-releases depName=cli/cli versioning=semver-coerced
 ARG GITHUB_CLI_VERSION=2.98.0
+# renovate: datasource=npm depName=pnpm
+ARG PNPM_VERSION=11.25.0
 
 # AI agent CLIs
 # renovate: datasource=npm depName=@openai/codex
@@ -112,6 +114,29 @@ RUN set -eux; \
   gh --version; \
   node --version; \
   go version
+
+# pnpm is installed with its own POSIX installer rather than through Corepack
+# or npm, so the pinned version is present without a network round trip on
+# first use. For pnpm 11 the installer downloads the release archive from
+# GitHub over HTTPS, the same trust boundary as the other tools above. pnpm
+# still honours a repository's own "packageManager" field and fetches that
+# version into PNPM_HOME when it differs, so PNPM_HOME belongs to the
+# container user.
+ENV PNPM_HOME=/usr/local/share/pnpm
+ENV PATH="${PNPM_HOME}/bin:${PATH}"
+RUN set -eux -o pipefail; \
+  curl -fsSL https://get.pnpm.io/install.sh \
+    | env PNPM_VERSION="${PNPM_VERSION}" \
+      PNPM_HOME="${PNPM_HOME}" \
+      SHELL="$(command -v sh)" \
+      ENV=/tmp/pnpm-setup-shrc \
+      sh -; \
+  rm -f /tmp/pnpm-setup-shrc; \
+  chown -R vscode:vscode "${PNPM_HOME}"; \
+  ln -sf "${PNPM_HOME}/bin/pnpm" /usr/local/bin/pnpm; \
+  ln -sf "${PNPM_HOME}/bin/pnpx" /usr/local/bin/pnpx; \
+  installed_pnpm_version="$(pnpm --version)"; \
+  test "${installed_pnpm_version}" = "${PNPM_VERSION}"
 
 RUN set -eux; \
   install -d -m 0755 /usr/local/share/codex /usr/local/share/grok; \
