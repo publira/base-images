@@ -117,13 +117,14 @@ RUN set -eux; \
 
 # pnpm is installed with its own POSIX installer rather than through Corepack
 # or npm, so the pinned version is present without a network round trip on
-# first use. The installer verifies the download against the npm registry
-# signature. pnpm still honours a repository's own "packageManager" field and
-# fetches that version into PNPM_HOME when it differs, so PNPM_HOME belongs to
-# the container user.
+# first use. For pnpm 11 the installer downloads the release archive from
+# GitHub over HTTPS, the same trust boundary as the other tools above. pnpm
+# still honours a repository's own "packageManager" field and fetches that
+# version into PNPM_HOME when it differs, so PNPM_HOME belongs to the
+# container user.
 ENV PNPM_HOME=/usr/local/share/pnpm
 ENV PATH="${PNPM_HOME}/bin:${PATH}"
-RUN set -eux; \
+RUN set -eux -o pipefail; \
   curl -fsSL https://get.pnpm.io/install.sh \
     | env PNPM_VERSION="${PNPM_VERSION}" \
       PNPM_HOME="${PNPM_HOME}" \
@@ -134,7 +135,8 @@ RUN set -eux; \
   chown -R vscode:vscode "${PNPM_HOME}"; \
   ln -sf "${PNPM_HOME}/bin/pnpm" /usr/local/bin/pnpm; \
   ln -sf "${PNPM_HOME}/bin/pnpx" /usr/local/bin/pnpx; \
-  pnpm --version
+  installed_pnpm_version="$(pnpm --version)"; \
+  test "${installed_pnpm_version}" = "${PNPM_VERSION}"
 
 RUN set -eux; \
   install -d -m 0755 /usr/local/share/codex /usr/local/share/grok; \
