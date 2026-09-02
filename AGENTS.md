@@ -63,6 +63,7 @@ supply-chain checks:
 ```sh
 ./scripts/check-renovate-coverage.sh
 ./scripts/check-third-party-notices.sh --verify-sources
+./scripts/collect-corresponding-source.sh --output "$(mktemp -d)"
 ```
 
 ## Publishing

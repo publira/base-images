@@ -259,13 +259,6 @@ jobs:
       - name: Set up ORAS
         uses: oras-project/setup-oras@1d808f7d7f6995cc68b7bf507bfe5c5446e1dc9d # v2.0.1
 
-      - name: Collect the Corresponding Source
-        run: |
-          ./scripts/collect-corresponding-source.sh \
-            --image-directory "${{ matrix.context }}" \
-            --output "${{ runner.temp }}/corresponding-source" \
-            --image-reference "ghcr.io/${{ github.repository }}/${{ matrix.image }}:${{ needs.prepare.outputs.date }}-${{ github.run_number }}"
-
       - name: Log in to GitHub Container Registry
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -274,6 +267,26 @@ jobs:
             | oras login ghcr.io \
                 --username "${{ github.repository_owner }}" \
                 --password-stdin
+
+      - name: Resolve the published manifest
+        id: image
+        env:
+          IMAGE: ghcr.io/${{ github.repository }}/${{ matrix.image }}
+          TAG: ${{ needs.prepare.outputs.date }}-${{ github.run_number }}
+        run: |
+          # The index records the digest rather than a tag, so the source stays
+          # tied to the exact manifest even after the tag moves. Resolving it
+          # here also keeps every entry of the matrix independent.
+          set -o pipefail
+          digest="$(oras manifest fetch --descriptor "${IMAGE}:${TAG}" | jq --raw-output .digest)"
+          echo "reference=${IMAGE}@${digest}" >> "$GITHUB_OUTPUT"
+
+      - name: Collect the Corresponding Source
+        run: |
+          ./scripts/collect-corresponding-source.sh \
+            --image-directory "${{ matrix.context }}" \
+            --output "${{ runner.temp }}/corresponding-source" \
+            --image-reference "${{ steps.image.outputs.reference }}"
 
       # The source is published beside the image and shares its tags, so it
       # stays available for as long as the image version it belongs to.

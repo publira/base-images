@@ -93,7 +93,13 @@ while IFS=$'\t' read -r component build_arg license repository tag_template; do
   fi
 
   tag="${tag_template//\{version\}/${version}}"
-  commit="$(git ls-remote --tags "$repository" "refs/tags/${tag}" | cut -f 1)"
+  refs="$(git ls-remote --tags "$repository" "refs/tags/${tag}" "refs/tags/${tag}^{}")"
+  # An annotated tag resolves to the tag object, so prefer the peeled
+  # reference, which names the commit the archive was made from.
+  commit="$(awk -v ref="refs/tags/${tag}^{}" '$2 == ref { print $1 }' <<<"$refs")"
+  if [ -z "$commit" ]; then
+    commit="$(awk -v ref="refs/tags/${tag}" '$2 == ref { print $1 }' <<<"$refs")"
+  fi
   if [ -z "$commit" ]; then
     printf 'error: %s has no tag %s\n' "$repository" "$tag" >&2
     exit 1
