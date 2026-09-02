@@ -37,6 +37,20 @@ while IFS= read -r dockerfile; do
   done < <(grep '^FROM ' "$dockerfile")
 done < <(find . -name Dockerfile -not -path './.git/*' | sort)
 
+# Versions pinned in a workflow environment need the same annotation, which
+# is what the "customManagers:githubActionsVersions" preset looks for.
+while IFS= read -r workflow; do
+  awk -v workflow="$workflow" '
+    BEGIN { missing = 0 }
+    /^[[:space:]]*[A-Za-z0-9_]+_VERSION:/ && previous !~ /# renovate: / {
+      printf "%s:%d:%s\n", workflow, FNR, $0
+      missing = 1
+    }
+    { previous = $0 }
+    END { exit missing }
+  ' "$workflow" || fail "$workflow pins a version without a \"# renovate:\" annotation"
+done < <(find .github/workflows -name '*.yml' | sort)
+
 # The Dev Container image is pinned the same way.
 if ! grep --quiet '"image": *"[^"]*@sha256:[0-9a-f]\{64\}"' .devcontainer/devcontainer.json; then
   fail ".devcontainer/devcontainer.json does not pin its image by digest"

@@ -26,8 +26,12 @@ jobs:
         run: ./scripts/check-renovate-coverage.sh
 
       - name: Validate the Renovate configuration
+        env:
+          # renovate: datasource=npm depName=renovate
+          RENOVATE_VERSION: 44.57.2
         run: |
-          npx --yes --package renovate -- renovate-config-validator
+          npx --yes --package "renovate@${RENOVATE_VERSION}" -- renovate-config-validator
+
       - name: Check the third-party notices
         run: ./scripts/check-third-party-notices.sh --verify-sources
 
