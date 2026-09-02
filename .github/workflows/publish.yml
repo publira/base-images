@@ -6,7 +6,16 @@ on:
     paths:
       - dev/**
       - .github/workflows/publish.yml
+  # Rebuild on a schedule so published images pick up operating-system and
+  # upstream tool updates even when this repository has no source change.
+  schedule:
+    - cron: 40 3 * * 1
   workflow_dispatch:
+    inputs:
+      no-cache:
+        description: Rebuild every layer instead of reusing the build cache.
+        type: boolean
+        default: false
 
 jobs:
   prepare:
@@ -16,12 +25,27 @@ jobs:
     outputs:
       date: ${{ steps.tags.outputs.date }}
       started-at: ${{ steps.tags.outputs.started-at }}
+      no-cache: ${{ steps.cache.outputs.no-cache }}
     steps:
       - name: Generate image tags
         id: tags
         run: |
           echo "date=$(date --utc +%Y.%m.%d)" >> "$GITHUB_OUTPUT"
           echo "started-at=$(date --utc +%s)" >> "$GITHUB_OUTPUT"
+
+      - name: Resolve cache mode
+        id: cache
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          REQUESTED: ${{ inputs.no-cache }}
+        run: |
+          # A scheduled rebuild only refreshes the image when it re-runs every
+          # layer instead of restoring the cache written by the last build.
+          if [ "$EVENT_NAME" = schedule ] || [ "$REQUESTED" = true ]; then
+            echo "no-cache=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "no-cache=false" >> "$GITHUB_OUTPUT"
+          fi
 
   build:
     name: Build ${{ matrix.image }} (${{ matrix.platform }})
@@ -73,6 +97,11 @@ jobs:
             org.opencontainers.image.description=Development base image for Publira Dev Containers.
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.licenses=Apache-2.0
+          # The attestations travel with the per-platform image, so the merged
+          # manifest describes how each platform was built and what it contains.
+          provenance: mode=max
+          sbom: true
+          no-cache: ${{ needs.prepare.outputs.no-cache == 'true' }}
           # A platform-specific cache avoids concurrent writes to one GHA cache scope.
           cache-from: type=gha,scope=${{ matrix.image }}-${{ matrix.platform-id }}
           cache-to: type=gha,mode=max,scope=${{ matrix.image }}-${{ matrix.platform-id }}
@@ -96,6 +125,9 @@ jobs:
     needs: [prepare, build]
     runs-on: ubuntu-24.04
     permissions:
+      attestations: write
+      contents: read
+      id-token: write
       packages: write
     strategy:
       matrix:
@@ -120,6 +152,7 @@ jobs:
           path: ${{ runner.temp }}/digests
 
       - name: Create and push manifest
+        id: manifest
         working-directory: ${{ runner.temp }}/digests
         run: |
           image_refs=()
@@ -132,15 +165,53 @@ jobs:
             --tag "ghcr.io/${{ github.repository }}/${{ matrix.image }}:${{ needs.prepare.outputs.date }}" \
             --tag "ghcr.io/${{ github.repository }}/${{ matrix.image }}:${{ needs.prepare.outputs.date }}-${{ github.run_number }}" \
             "${image_refs[@]}"
+          digest="$(
+            docker buildx imagetools inspect --format '{{json .Manifest}}' \
+              "ghcr.io/${{ github.repository }}/${{ matrix.image }}:${{ needs.prepare.outputs.date }}-${{ github.run_number }}" \
+              | jq --raw-output .digest
+          )"
+          echo "digest=${digest}" >> "$GITHUB_OUTPUT"
 
       - name: Verify multi-platform manifest
+        env:
+          IMAGE: ghcr.io/${{ github.repository }}/${{ matrix.image }}
+          DIGEST: ${{ steps.manifest.outputs.digest }}
         run: |
-          docker buildx imagetools inspect --raw \
-            "ghcr.io/${{ github.repository }}/${{ matrix.image }}:${{ needs.prepare.outputs.date }}-${{ github.run_number }}" \
-            | jq --exit-status '
-                [.manifests[] | select(.platform.os == "linux") | .platform.architecture]
-                | sort == ["amd64", "arm64"]
-              '
+          set -o pipefail
+          manifest="$(docker buildx imagetools inspect --raw "${IMAGE}@${DIGEST}")"
+          jq --exit-status '
+            [.manifests[] | select(.platform.os == "linux") | .platform.architecture]
+            | sort == ["amd64", "arm64"]
+          ' <<<"$manifest"
+
+          # Every platform keeps its own attestation manifest, and each of them
+          # has to carry both the provenance and the SBOM predicate.
+          attestations="$(
+            jq --raw-output '
+              .manifests[]
+              | select(.annotations["vnd.docker.reference.type"] == "attestation-manifest")
+              | .digest
+            ' <<<"$manifest"
+          )"
+          if [ "$(printf '%s\n' "$attestations" | grep --count .)" -ne 2 ]; then
+            echo "::error::the published manifest does not attest both platforms"
+            exit 1
+          fi
+          for attestation in $attestations; do
+            docker buildx imagetools inspect --raw "${IMAGE}@${attestation}" \
+              | jq --exit-status '
+                  [.layers[].annotations["in-toto.io/predicate-type"]] as $predicates
+                  | ($predicates | any(test("slsa.dev/provenance")))
+                    and ($predicates | any(test("spdx.dev")))
+                '
+          done
+
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-name: ghcr.io/${{ github.repository }}/${{ matrix.image }}
+          subject-digest: ${{ steps.manifest.outputs.digest }}
+          push-to-registry: true
 
       - name: Record publication time
         run: |
