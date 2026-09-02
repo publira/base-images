@@ -56,5 +56,7 @@ copyright notices for the directly redistributed MIT-licensed tools follow.
 
 `golangci-lint` is distributed as an unmodified, separate GPL-3.0 program.
 Its exact Corresponding Source is available at the versioned URL above at no
-charge. The source must remain available on equivalent terms for as long as
-this image version is offered.
+charge. A copy of that source is also published beside the image as
+`ghcr.io/publira/base-images/publira-dev-corresponding-source`, tagged exactly
+like the image version it belongs to, so it remains available on equivalent
+terms for as long as that image version is offered.
