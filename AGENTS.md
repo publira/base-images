@@ -30,9 +30,12 @@ written in English.
 - Claude Code is excluded from public images because its commercial terms do
   not grant an express redistribution permission. Do not add it without a
   written redistribution grant from Anthropic.
-- Update `dev/THIRD_PARTY_NOTICES.md` and the image copy when changing any
-  redistributed tool or its version. `golangci-lint` is GPL-3.0: retain its
-  license text and a precise Corresponding Source URL.
+- Describe every redistributed tool in `<image>/third-party.json`. The build
+  argument, license, and upstream source location live there, and
+  `THIRD_PARTY_NOTICES.md` and the image copy are updated in the same change.
+  `golangci-lint` is GPL-3.0: retain its license text, keep a precise
+  Corresponding Source URL, and keep `correspondingSource` set so the
+  publishing workflow mirrors its source beside the image.
 
 ## Development container
 
@@ -54,9 +57,26 @@ After changing `.devcontainer/`, validate the resolved configuration:
 npx --yes @devcontainers/cli read-configuration --workspace-folder .
 ```
 
+After changing an image, its third-party manifest, or the workflows, run the
+supply-chain checks:
+
+```sh
+./scripts/check-renovate-coverage.sh
+./scripts/check-third-party-notices.sh --verify-sources
+./scripts/collect-corresponding-source.sh --output "$(mktemp -d)"
+```
+
 ## Publishing
 
 The publishing workflow builds every matrix entry as a multi-platform
 (`linux/amd64`, `linux/arm64`) manifest. It publishes `latest`, a UTC date tag,
 a date-and-run-number tag. Keep all of these tags and the per-image cache scope
 when changing the workflow. Give each job only the permissions it needs.
+
+Every image is published with per-platform SLSA provenance and SPDX SBOM
+attestations, with GitHub build provenance for the merged manifest, and with
+the Corresponding Source of its copyleft components under a matching
+`-corresponding-source` package. Keep these outputs and their verification
+steps when changing the workflow. A weekly schedule republishes every image
+without the layer cache; that cache-free rebuild is what delivers upstream
+operating-system updates, so keep it intact.

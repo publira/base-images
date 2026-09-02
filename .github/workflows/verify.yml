@@ -1,0 +1,43 @@
+name: Verify
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions: {}
+
+jobs:
+  compliance:
+    name: Verify supply-chain metadata
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Check the scripts
+        run: shellcheck scripts/*.sh
+
+      - name: Check that Renovate covers every pinned version
+        run: ./scripts/check-renovate-coverage.sh
+
+      - name: Validate the Renovate configuration
+        env:
+          # renovate: datasource=npm depName=renovate
+          RENOVATE_VERSION: 44.57.2
+        run: |
+          npx --yes --package "renovate@${RENOVATE_VERSION}" -- renovate-config-validator
+
+      - name: Check the third-party notices
+        run: ./scripts/check-third-party-notices.sh --verify-sources
+
+      # Publishing the Corresponding Source must not be the first place where a
+      # broken source location is noticed.
+      - name: Collect the Corresponding Source
+        run: |
+          ./scripts/collect-corresponding-source.sh \
+            --output "${{ runner.temp }}/corresponding-source"
