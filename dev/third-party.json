@@ -1,0 +1,128 @@
+[
+  {
+    "component": "Go",
+    "buildArg": "GO_VERSION",
+    "section": "Languages and frameworks",
+    "license": "BSD-3-Clause",
+    "sourceRepository": "https://github.com/golang/go",
+    "sourceTag": "go{version}",
+    "correspondingSource": false
+  },
+  {
+    "component": "Flutter",
+    "buildArg": "FLUTTER_VERSION",
+    "section": "Languages and frameworks",
+    "license": "BSD-3-Clause",
+    "sourceRepository": "https://github.com/flutter/flutter",
+    "sourceTag": "{version}",
+    "correspondingSource": false
+  },
+  {
+    "component": "Node.js",
+    "buildArg": "NODE_VERSION",
+    "section": "Languages and frameworks",
+    "license": "MIT and third-party notices",
+    "sourceRepository": "https://github.com/nodejs/node",
+    "sourceTag": "v{version}",
+    "correspondingSource": false
+  },
+  {
+    "component": "Task",
+    "buildArg": "TASK_VERSION",
+    "section": "Command-line tools",
+    "license": "MIT",
+    "sourceRepository": "https://github.com/go-task/task",
+    "sourceTag": "v{version}",
+    "correspondingSource": false
+  },
+  {
+    "component": "sqlc",
+    "buildArg": "SQLC_VERSION",
+    "section": "Command-line tools",
+    "license": "MIT",
+    "sourceRepository": "https://github.com/sqlc-dev/sqlc",
+    "sourceTag": "v{version}",
+    "correspondingSource": false
+  },
+  {
+    "component": "Buf",
+    "buildArg": "BUF_VERSION",
+    "section": "Command-line tools",
+    "license": "Apache-2.0",
+    "sourceRepository": "https://github.com/bufbuild/buf",
+    "sourceTag": "v{version}",
+    "correspondingSource": false
+  },
+  {
+    "component": "golang-migrate",
+    "buildArg": "MIGRATE_VERSION",
+    "section": "Command-line tools",
+    "license": "MIT",
+    "sourceRepository": "https://github.com/golang-migrate/migrate",
+    "sourceTag": "v{version}",
+    "correspondingSource": false
+  },
+  {
+    "component": "golangci-lint",
+    "buildArg": "GOLANGCI_LINT_VERSION",
+    "section": "Command-line tools",
+    "license": "GPL-3.0-only",
+    "sourceRepository": "https://github.com/golangci/golangci-lint",
+    "sourceTag": "v{version}",
+    "correspondingSource": true
+  },
+  {
+    "component": "wait4x",
+    "buildArg": "WAIT4X_VERSION",
+    "section": "Command-line tools",
+    "license": "Apache-2.0",
+    "sourceRepository": "https://github.com/wait4x/wait4x",
+    "sourceTag": "v{version}",
+    "correspondingSource": false
+  },
+  {
+    "component": "AWS CLI",
+    "buildArg": "AWS_CLI_VERSION",
+    "section": "Command-line tools",
+    "license": "Apache-2.0 and third-party notices",
+    "sourceRepository": "https://github.com/aws/aws-cli",
+    "sourceTag": "{version}",
+    "correspondingSource": false
+  },
+  {
+    "component": "GitHub CLI",
+    "buildArg": "GITHUB_CLI_VERSION",
+    "section": "Command-line tools",
+    "license": "MIT",
+    "sourceRepository": "https://github.com/cli/cli",
+    "sourceTag": "v{version}",
+    "correspondingSource": false
+  },
+  {
+    "component": "pnpm",
+    "buildArg": "PNPM_VERSION",
+    "section": "Command-line tools",
+    "license": "MIT",
+    "sourceRepository": "https://github.com/pnpm/pnpm",
+    "sourceTag": "v{version}",
+    "correspondingSource": false
+  },
+  {
+    "component": "Codex",
+    "buildArg": "CODEX_VERSION",
+    "section": "AI agent CLIs",
+    "license": "Apache-2.0 and third-party notices",
+    "sourceRepository": "https://github.com/openai/codex",
+    "sourceTag": "rust-v{version}",
+    "correspondingSource": false
+  },
+  {
+    "component": "Grok Build",
+    "buildArg": "GROK_VERSION",
+    "section": "AI agent CLIs",
+    "license": "Apache-2.0 and third-party notices",
+    "sourceRepository": "https://github.com/xai-org/grok-build",
+    "sourceTag": null,
+    "correspondingSource": false
+  }
+]

@@ -44,14 +44,14 @@ copyright notices for the directly redistributed MIT-licensed tools follow.
 | golangci-lint | 2.13.2 | GPL-3.0-only | <https://github.com/golangci/golangci-lint/tree/v2.13.2> |
 | wait4x | 3.7.1 | Apache-2.0 | <https://github.com/wait4x/wait4x/tree/v3.7.1> |
 | AWS CLI | 2.36.33 | Apache-2.0 and third-party notices | <https://github.com/aws/aws-cli/tree/2.36.33> |
-| GitHub CLI | 2.97.0 | MIT | <https://github.com/cli/cli/tree/v2.97.0> |
+| GitHub CLI | 2.99.0 | MIT | <https://github.com/cli/cli/tree/v2.99.0> |
 | pnpm | 11.25.0 | MIT | <https://github.com/pnpm/pnpm/tree/v11.25.0> |
 
 ## AI agent CLIs
 
 | Component | Version | License | Corresponding source |
 | --- | --- | --- | --- |
-| Codex | 0.150.1 | Apache-2.0 and third-party notices | <https://github.com/openai/codex/tree/rust-v0.150.1> |
+| Codex | 0.151.0 | Apache-2.0 and third-party notices | <https://github.com/openai/codex/tree/rust-v0.151.0> |
 | Grok Build | 1.0.13 | Apache-2.0 and third-party notices | <https://github.com/xai-org/grok-build> |
 
 `golangci-lint` is distributed as an unmodified, separate GPL-3.0 program.
