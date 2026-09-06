@@ -1,4 +1,8 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   extends: ["github>publira/.github//renovate.json5"],
+  // The Generate workflow commits the regenerated third-party notices onto
+  // Renovate's own branches. Renovate stops updating a branch it believes a
+  // human edited, so its bot has to be exempt from that check.
+  gitIgnoredAuthors: ["41898282+github-actions[bot]@users.noreply.github.com"],
 }

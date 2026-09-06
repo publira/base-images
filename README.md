@@ -30,6 +30,15 @@ the image at `/usr/local/share/licenses/publira-base-images/`. They are checked
 against [`dev/third-party.json`](dev/third-party.json), which records the build
 argument, license, and upstream source location of every redistributed tool.
 
+The tables in that file are generated rather than authored:
+`./scripts/check-third-party-notices.sh --write` renders them from the manifest
+and the build arguments in the Dockerfile.
+[`.github/workflows/generate.yml`](.github/workflows/generate.yml) runs it on
+the branches Renovate opens and commits the result back, so a version bump
+arrives with its notices already updated. The prose around the tables — the
+copyright notices, the base image, and the GPL-3.0 paragraph — stays
+hand-written.
+
 The Corresponding Source of the redistributed GPL-3.0 components is published
 beside each image and shares its tags, so it stays available for as long as the
 matching image:
@@ -68,7 +77,9 @@ which checks the metadata those guarantees depend on:
 - [`scripts/check-third-party-notices.sh`](scripts/check-third-party-notices.sh)
   confirms that the notices describe exactly the tools and versions the image
   installs, that the license texts ship inside the image, and that every
-  documented source location still exists upstream.
+  documented source location still exists upstream. With `--write` it
+  regenerates the tables first, so the comparison only reports mistakes that
+  are not derived data.
 - [`scripts/collect-corresponding-source.sh`](scripts/collect-corresponding-source.sh)
   downloads the Corresponding Source archives that the publishing workflow
   stores next to the image.
