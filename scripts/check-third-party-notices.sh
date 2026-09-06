@@ -4,7 +4,9 @@
 # The manifest at <image>/third-party.json is the single source of truth for
 # the directly redistributed tools. This script compares it with the build
 # arguments in the Dockerfile and with the tables in THIRD_PARTY_NOTICES.md,
-# so a version bump cannot land without the matching notice update.
+# so a version bump cannot land without the matching notice update. Those
+# tables are derived rather than authored, so --write regenerates them from
+# the manifest and the Dockerfile instead of only reporting the drift.
 
 set -euo pipefail
 
@@ -14,6 +16,8 @@ Usage: check-third-party-notices.sh [options]
 
 Options:
   --image-directory DIR  Image directory to check (default: dev).
+  --write                Regenerate the notices tables from the manifest and
+                         the Dockerfile before comparing them.
   --verify-sources       Also confirm every documented source location exists
                          upstream. Requires network access.
   -h, --help             Show this help.
@@ -22,6 +26,7 @@ USAGE
 
 image_directory=dev
 verify_sources=false
+write=false
 
 while [ "$#" -gt 0 ]; do
   case "$1" in
@@ -31,6 +36,10 @@ while [ "$#" -gt 0 ]; do
       ;;
     --verify-sources)
       verify_sources=true
+      shift
+      ;;
+    --write)
+      write=true
       shift
       ;;
     -h | --help)
@@ -129,6 +138,41 @@ expected_rows() {
     | "| \(.component) | \(.version) | \(.license) | <\(.source)> |"
   ' <<<"$components"
 }
+
+# Rewrite the section tables in place. Their rows are derived data, so a
+# version bump does not need a hand-written notices commit: regenerate them and
+# let the comparisons below run against the result.
+write_sections() {
+  local section rows rewritten
+  while read -r section; do
+    rows="$(expected_rows "$section")"
+    if ! rewritten="$(
+      awk -v heading="## $section" -v rows="$rows" '
+        $0 == heading { inside = 1; print; next }
+        inside && /^## / { inside = 0 }
+        inside && /^\| / {
+          if (!replaced) {
+            print "| Component | Version | License | Corresponding source |"
+            print "| --- | --- | --- | --- |"
+            print rows
+            replaced = 1
+          }
+          next
+        }
+        { print }
+        END { exit replaced ? 0 : 1 }
+      ' "$notices"
+    )"; then
+      fail "$notices has no \"$section\" table to regenerate"
+      continue
+    fi
+    printf '%s\n' "$rewritten" >"$notices"
+  done < <(jq -r '[.[].section] | unique | .[]' "$manifest")
+}
+
+if [ "$write" = true ]; then
+  write_sections
+fi
 
 while read -r section; do
   if ! diff --unified --label "expected ($manifest)" --label "actual ($notices)" \

@@ -36,6 +36,10 @@ written in English.
   `golangci-lint` is GPL-3.0: retain its license text, keep a precise
   Corresponding Source URL, and keep `correspondingSource` set so the
   publishing workflow mirrors its source beside the image.
+- The three tables in `<image>/THIRD_PARTY_NOTICES.md` are generated from that
+  manifest and the Dockerfile. Run
+  `./scripts/check-third-party-notices.sh --write` instead of editing a row by
+  hand; the prose around the tables stays hand-written.
 
 ## Development container
 
@@ -65,6 +69,17 @@ supply-chain checks:
 ./scripts/check-third-party-notices.sh --verify-sources
 ./scripts/collect-corresponding-source.sh --output "$(mktemp -d)"
 ```
+
+## Generated files
+
+`.github/workflows/generate.yml` regenerates the third-party notices on the
+branches Renovate opens and commits the result back with `GITHUB_TOKEN`. That
+push does not start a new `Verify` run, so the job runs the same check itself;
+the pull request's own checks can be re-run by hand afterwards. Renovate treats
+that commit as its own because `.github/renovate.json5` lists the bot in
+`gitIgnoredAuthors`, so keep that entry when changing the workflow. `Verify`
+stays a required part of every pull request: once the rows are generated, it
+can only go red on a genuine mistake.
 
 ## Publishing
 

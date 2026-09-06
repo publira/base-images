@@ -1,0 +1,55 @@
+name: Generate
+
+# Renovate's own pull requests move a version argument without touching the
+# notices table that repeats it, which is drift no human authored. Regenerate
+# the tables on the branch instead, so the bump arrives complete.
+on:
+  push:
+    branches: ['renovate/**']
+    paths:
+      - dev/**
+      - scripts/check-third-party-notices.sh
+      - .github/workflows/generate.yml
+
+# A rebase supersedes the branch this run started from.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  notices:
+    name: Update the third-party notices
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # The regenerated notices are pushed back onto this branch, so the
+          # checkout credentials have to stay in the local configuration.
+          persist-credentials: true
+
+      # Regenerating the tables runs every other check as well, so a genuine
+      # mistake still fails instead of being committed. A push made with
+      # GITHUB_TOKEN does not start a new Verify run, which is why this job
+      # verifies the tree it is about to commit. The pull request's own checks
+      # can be re-run by hand once the commit lands.
+      - name: Regenerate and check the third-party notices
+        run: ./scripts/check-third-party-notices.sh --write --verify-sources
+
+      - name: Commit the regenerated notices
+        env:
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          if git diff --quiet; then
+            echo 'The third-party notices already describe this branch.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit --all \
+            --message 'chore(dev): update the generated third-party notices'
+          git push origin "HEAD:${BRANCH}"
