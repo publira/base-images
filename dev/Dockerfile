@@ -35,7 +35,7 @@ ARG CODEX_VERSION=0.151.0
 ARG GROK_VERSION=1.0.13
 
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
- && apt-get -y install --no-install-recommends postgresql-client \
+ && apt-get -y install --no-install-recommends postgresql-client valkey-tools \
     clang cmake ninja-build pkg-config libgtk-3-dev libvips-dev unzip xz-utils
 
 RUN set -eux; \
