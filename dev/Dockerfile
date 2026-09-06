@@ -26,7 +26,7 @@ ARG AWS_CLI_VERSION=2.36.33
 # renovate: datasource=github-releases depName=cli/cli versioning=semver-coerced
 ARG GITHUB_CLI_VERSION=2.99.0
 # renovate: datasource=npm depName=pnpm
-ARG PNPM_VERSION=11.25.0
+ARG PNPM_VERSION=12.3.1
 
 # AI agent CLIs
 # renovate: datasource=npm depName=@openai/codex
@@ -117,11 +117,9 @@ RUN set -eux; \
 
 # pnpm is installed with its own POSIX installer rather than through Corepack
 # or npm, so the pinned version is present without a network round trip on
-# first use. For pnpm 11 the installer downloads the release archive from
-# GitHub over HTTPS, the same trust boundary as the other tools above. pnpm
-# still honours a repository's own "packageManager" field and fetches that
-# version into PNPM_HOME when it differs, so PNPM_HOME belongs to the
-# container user.
+# first use. pnpm still honours a repository's own "packageManager" field and
+# fetches that version into PNPM_HOME when it differs, so PNPM_HOME belongs to
+# the container user.
 ENV PNPM_HOME=/usr/local/share/pnpm
 ENV PATH="${PNPM_HOME}/bin:${PATH}"
 RUN set -eux -o pipefail; \
