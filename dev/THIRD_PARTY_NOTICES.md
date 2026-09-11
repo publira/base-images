@@ -39,7 +39,7 @@ copyright notices for the directly redistributed MIT-licensed tools follow.
 | --- | --- | --- | --- |
 | Task | 3.53.1 | MIT | <https://github.com/go-task/task/tree/v3.53.1> |
 | sqlc | 1.31.1 | MIT | <https://github.com/sqlc-dev/sqlc/tree/v1.31.1> |
-| Buf | 1.72.0 | Apache-2.0 | <https://github.com/bufbuild/buf/tree/v1.72.0> |
+| Buf | 1.73.0 | Apache-2.0 | <https://github.com/bufbuild/buf/tree/v1.73.0> |
 | golang-migrate | 4.20.1 | MIT | <https://github.com/golang-migrate/migrate/tree/v4.20.1> |
 | golangci-lint | 2.13.2 | GPL-3.0-only | <https://github.com/golangci/golangci-lint/tree/v2.13.2> |
 | wait4x | 3.7.1 | Apache-2.0 | <https://github.com/wait4x/wait4x/tree/v3.7.1> |
