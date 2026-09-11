@@ -32,7 +32,7 @@ ARG PNPM_VERSION=12.3.4
 # renovate: datasource=npm depName=@openai/codex
 ARG CODEX_VERSION=0.153.4
 # renovate: datasource=npm depName=@xai-official/grok
-ARG GROK_VERSION=1.0.22
+ARG GROK_VERSION=1.0.24
 
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
  && apt-get -y install --no-install-recommends postgresql-client valkey-tools \
