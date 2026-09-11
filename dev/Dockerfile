@@ -14,7 +14,7 @@ ARG TASK_VERSION=3.53.1
 # renovate: datasource=github-releases depName=sqlc-dev/sqlc versioning=semver-coerced
 ARG SQLC_VERSION=1.31.1
 # renovate: datasource=github-releases depName=bufbuild/buf versioning=semver-coerced
-ARG BUF_VERSION=1.72.0
+ARG BUF_VERSION=1.73.0
 # renovate: datasource=github-releases depName=golang-migrate/migrate versioning=semver-coerced
 ARG MIGRATE_VERSION=4.20.1
 # renovate: datasource=github-releases depName=golangci/golangci-lint versioning=semver-coerced
