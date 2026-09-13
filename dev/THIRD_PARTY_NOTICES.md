@@ -52,7 +52,7 @@ copyright notices for the directly redistributed MIT-licensed tools follow.
 | Component | Version | License | Corresponding source |
 | --- | --- | --- | --- |
 | Codex | 0.154.0 | Apache-2.0 and third-party notices | <https://github.com/openai/codex/tree/rust-v0.154.0> |
-| Grok Build | 1.0.25 | Apache-2.0 and third-party notices | <https://github.com/xai-org/grok-build> |
+| Grok Build | 1.0.27 | Apache-2.0 and third-party notices | <https://github.com/xai-org/grok-build> |
 
 `golangci-lint` is distributed as an unmodified, separate GPL-3.0 program.
 Its exact Corresponding Source is available at the versioned URL above at no
