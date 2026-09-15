@@ -72,14 +72,23 @@ supply-chain checks:
 
 ## Generated files
 
-`.github/workflows/generate.yml` regenerates the third-party notices on the
-branches Renovate opens and commits the result back with `GITHUB_TOKEN`. That
-push does not start a new `Verify` run, so the job runs the same check itself;
-the pull request's own checks can be re-run by hand afterwards. Renovate treats
-that commit as its own because `.github/renovate.json5` lists the bot in
-`gitIgnoredAuthors`, so keep that entry when changing the workflow. `Verify`
-stays a required part of every pull request: once the rows are generated, it
-can only go red on a genuine mistake.
+The tables in `<image>/THIRD_PARTY_NOTICES.md` are derived data.
+`./scripts/check-third-party-notices.sh --write` renders them from the manifest
+and the Dockerfile, which is how a component, a license, or a source location
+is added or changed.
+
+A version bump does not go through that script. Every generated row ends with
+the `renovate:` annotation of its build argument, in an HTML comment that
+renders as nothing, and `.github/renovate.json5` declares one custom manager
+that reads it. Renovate therefore extracts the row as the same dependency it
+already updates in the Dockerfile — same datasource, name, and versioning — so
+both files move on one branch, and it rewrites the version column and the tag
+in the source URL together. The annotation is copied from the Dockerfile when
+the row is generated, so it cannot drift; keep it on every row, which
+`./scripts/check-renovate-coverage.sh` enforces.
+
+`Verify` stays a required part of every pull request: the rows Renovate writes
+are checked against the manifest and the Dockerfile like any other change.
 
 ## Publishing
 

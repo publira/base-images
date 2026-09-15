@@ -1,8 +1,22 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   extends: ["github>publira/.github//renovate.json5"],
-  // The Generate workflow commits the regenerated third-party notices onto
-  // Renovate's own branches. Renovate stops updating a branch it believes a
-  // human edited, so its bot has to be exempt from that check.
-  gitIgnoredAuthors: ["41898282+github-actions[bot]@users.noreply.github.com"],
+  customManagers: [
+    {
+      customType: "regex",
+      description: "Update the versions repeated in the third-party notices",
+      // Every version an image pins is repeated in that image's notices, in
+      // the version column and in the tag of the source URL beside it. Each
+      // row therefore ends with the same `renovate:` annotation as its build
+      // argument, in an HTML comment that renders as nothing, so Renovate
+      // recognises the row as the dependency it already updates in the
+      // Dockerfile and moves both in one pull request. The row is matched as a
+      // whole because Renovate rewrites the version everywhere it occurs
+      // inside the match, which covers the tag in the source URL as well.
+      managerFilePatterns: ["**/THIRD_PARTY_NOTICES.md"],
+      matchStrings: [
+        "\\|[^|\\n]+\\| (?<currentValue>[^|\\n]+?) \\|[^\\n]*<!-- renovate: datasource=(?<datasource>[a-zA-Z0-9-._]+?) depName=(?<depName>[^\\s]+?)(?: (?:lookupName|packageName)=(?<packageName>[^\\s]+?))?(?: versioning=(?<versioning>[^\\s]+?))?(?: extractVersion=(?<extractVersion>[^\\s]+?))?(?: registryUrl=(?<registryUrl>[^\\s]+?))? -->",
+      ],
+    },
+  ],
 }
