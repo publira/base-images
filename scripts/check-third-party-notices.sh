@@ -7,6 +7,10 @@
 # so a version bump cannot land without the matching notice update. Those
 # tables are derived rather than authored, so --write regenerates them from
 # the manifest and the Dockerfile instead of only reporting the drift.
+#
+# Each row ends with the Renovate annotation of its build argument, in an HTML
+# comment that renders as nothing. That is what lets Renovate recognise the row
+# as the dependency it already updates in the Dockerfile and move both at once.
 
 set -euo pipefail
 
@@ -74,8 +78,11 @@ fail() {
   failures=$((failures + 1))
 }
 
-# Resolve every build argument the manifest refers to.
-versions="$(
+# Resolve every build argument the manifest refers to, together with the
+# Renovate annotation that drives its updates. The row repeats that annotation,
+# so Renovate describes the row and the argument as the same dependency and
+# moves both in one pull request.
+arguments="$(
   jq -r '.[].buildArg' "$manifest" | while read -r build_arg; do
     value="$(sed -n "s/^ARG ${build_arg}=\\(.*\\)\$/\\1/p" "$dockerfile")"
     if [ "$(printf '%s' "$value" | grep -c .)" -ne 1 ]; then
@@ -83,19 +90,36 @@ versions="$(
         "$dockerfile" "$build_arg" >&2
       exit 1
     fi
-    jq -n --arg name "$build_arg" --arg value "$value" '{($name): $value}'
+    annotation="$(
+      awk -v build_arg="$build_arg" '
+        $0 ~ "^ARG " build_arg "=" && previous ~ /^# renovate: / {
+          sub(/^# /, "", previous)
+          print previous
+        }
+        { previous = $0 }
+      ' "$dockerfile"
+    )"
+    if [ -z "$annotation" ]; then
+      printf 'error: %s does not annotate ARG %s for Renovate\n' \
+        "$dockerfile" "$build_arg" >&2
+      exit 1
+    fi
+    jq -n --arg name "$build_arg" --arg value "$value" --arg annotation "$annotation" \
+      '{($name): {version: $value, annotation: $annotation}}'
   done | jq -s 'add // {}'
 )"
 
 # Expand each manifest entry into the row it must produce in the notices.
 components="$(
-  jq --argjson versions "$versions" '
+  jq --argjson arguments "$arguments" '
     map(
       . as $component
-      | $versions[$component.buildArg] as $version
+      | $arguments[$component.buildArg] as $argument
+      | $argument.version as $version
       | $component
       + {
           version: $version,
+          annotation: $argument.annotation,
           source: (
             if $component.sourceTag == null then
               $component.sourceRepository
@@ -135,7 +159,7 @@ expected_rows() {
   jq -r --arg section "$1" '
     map(select(.section == $section))
     | .[]
-    | "| \(.component) | \(.version) | \(.license) | <\(.source)> |"
+    | "| \(.component) | \(.version) | \(.license) | <\(.source)> | <!-- \(.annotation) -->"
   ' <<<"$components"
 }
 
@@ -183,7 +207,7 @@ done < <(jq -r '[.[].section] | unique | .[]' "$manifest")
 
 # Catch rows that live outside a documented section as well.
 if ! diff --unified --label "expected ($manifest)" --label "actual ($notices)" \
-  <(jq -r '.[] | "| \(.component) | \(.version) | \(.license) | <\(.source)> |"' <<<"$components" | sort) \
+  <(jq -r '.[] | "| \(.component) | \(.version) | \(.license) | <\(.source)> | <!-- \(.annotation) -->"' <<<"$components" | sort) \
   <(awk '/^\| / && $0 !~ /^\| Component / && $0 !~ /^\| --- / { print }' "$notices" | sort); then
   fail "$notices documents components that $manifest does not describe"
 fi

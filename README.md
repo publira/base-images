@@ -32,12 +32,13 @@ argument, license, and upstream source location of every redistributed tool.
 
 The tables in that file are generated rather than authored:
 `./scripts/check-third-party-notices.sh --write` renders them from the manifest
-and the build arguments in the Dockerfile.
-[`.github/workflows/generate.yml`](.github/workflows/generate.yml) runs it on
-the branches Renovate opens and commits the result back, so a version bump
-arrives with its notices already updated. The prose around the tables — the
-copyright notices, the base image, and the GPL-3.0 paragraph — stays
-hand-written.
+and the build arguments in the Dockerfile. A version bump does not need it:
+every row ends with the Renovate annotation of its build argument, in an HTML
+comment that renders as nothing, so the custom manager in
+[`.github/renovate.json5`](.github/renovate.json5) lets Renovate rewrite the
+version column and the tag in the source URL in the same pull request that
+moves the build argument. The prose around the tables — the copyright notices,
+the base image, and the GPL-3.0 paragraph — stays hand-written.
 
 The Corresponding Source of the redistributed GPL-3.0 components is published
 beside each image and shares its tags, so it stays available for as long as the
@@ -73,7 +74,8 @@ which checks the metadata those guarantees depend on:
 
 - [`scripts/check-renovate-coverage.sh`](scripts/check-renovate-coverage.sh)
   confirms that every version argument carries a Renovate annotation, that base
-  images are pinned by digest, and that workflow actions are pinned to a commit.
+  images are pinned by digest, that workflow actions are pinned to a commit, and
+  that every notices row carries the annotation that keeps it in step.
 - [`scripts/check-third-party-notices.sh`](scripts/check-third-party-notices.sh)
   confirms that the notices describe exactly the tools and versions the image
   installs, that the license texts ship inside the image, and that every

@@ -67,6 +67,20 @@ while IFS= read -r workflow; do
   done < <(grep --extended-regexp '^\s*uses: [^.]' "$workflow")
 done < <(find .github/workflows -name '*.yml' | sort)
 
+# The third-party notices repeat every version a Dockerfile pins, so their rows
+# carry the same annotation as the build argument. A row without one keeps its
+# version until somebody regenerates the table by hand.
+while IFS= read -r notices; do
+  awk -v notices="$notices" '
+    BEGIN { missing = 0 }
+    /^\| / && $0 !~ /^\| Component / && $0 !~ /^\| --- / && $0 !~ /<!-- renovate: / {
+      printf "%s:%d: %s\n", notices, FNR, $0
+      missing = 1
+    }
+    END { exit missing }
+  ' "$notices" || fail "$notices has table rows without a \"renovate:\" annotation"
+done < <(find . -name THIRD_PARTY_NOTICES.md -not -path './.git/*' | sort)
+
 if [ "$failures" -gt 0 ]; then
   printf '\n%s failed with %d error(s).\n' "$(basename "$0")" "$failures" >&2
   exit 1

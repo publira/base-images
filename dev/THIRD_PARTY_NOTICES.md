@@ -29,30 +29,30 @@ copyright notices for the directly redistributed MIT-licensed tools follow.
 
 | Component | Version | License | Corresponding source |
 | --- | --- | --- | --- |
-| Go | 1.27.0 | BSD-3-Clause | <https://github.com/golang/go/tree/go1.27.0> |
-| Flutter | 3.47.4 | BSD-3-Clause | <https://github.com/flutter/flutter/tree/3.47.4> |
-| Node.js | 24.21.0 | MIT and third-party notices | <https://github.com/nodejs/node/tree/v24.21.0> |
+| Go | 1.27.0 | BSD-3-Clause | <https://github.com/golang/go/tree/go1.27.0> | <!-- renovate: datasource=github-releases depName=golang/go versioning=semver-coerced -->
+| Flutter | 3.47.4 | BSD-3-Clause | <https://github.com/flutter/flutter/tree/3.47.4> | <!-- renovate: datasource=flutter-version depName=flutter -->
+| Node.js | 24.21.0 | MIT and third-party notices | <https://github.com/nodejs/node/tree/v24.21.0> | <!-- renovate: datasource=node-version depName=node -->
 
 ## Command-line tools
 
 | Component | Version | License | Corresponding source |
 | --- | --- | --- | --- |
-| Task | 3.53.1 | MIT | <https://github.com/go-task/task/tree/v3.53.1> |
-| sqlc | 1.31.1 | MIT | <https://github.com/sqlc-dev/sqlc/tree/v1.31.1> |
-| Buf | 1.73.0 | Apache-2.0 | <https://github.com/bufbuild/buf/tree/v1.73.0> |
-| golang-migrate | 4.20.1 | MIT | <https://github.com/golang-migrate/migrate/tree/v4.20.1> |
-| golangci-lint | 2.13.2 | GPL-3.0-only | <https://github.com/golangci/golangci-lint/tree/v2.13.2> |
-| wait4x | 3.7.1 | Apache-2.0 | <https://github.com/wait4x/wait4x/tree/v3.7.1> |
-| AWS CLI | 2.36.33 | Apache-2.0 and third-party notices | <https://github.com/aws/aws-cli/tree/2.36.33> |
-| GitHub CLI | 2.100.0 | MIT | <https://github.com/cli/cli/tree/v2.100.0> |
-| pnpm | 12.4.1 | MIT | <https://github.com/pnpm/pnpm/tree/v12.4.1> |
+| Task | 3.53.1 | MIT | <https://github.com/go-task/task/tree/v3.53.1> | <!-- renovate: datasource=github-releases depName=go-task/task versioning=semver-coerced -->
+| sqlc | 1.31.1 | MIT | <https://github.com/sqlc-dev/sqlc/tree/v1.31.1> | <!-- renovate: datasource=github-releases depName=sqlc-dev/sqlc versioning=semver-coerced -->
+| Buf | 1.73.0 | Apache-2.0 | <https://github.com/bufbuild/buf/tree/v1.73.0> | <!-- renovate: datasource=github-releases depName=bufbuild/buf versioning=semver-coerced -->
+| golang-migrate | 4.20.1 | MIT | <https://github.com/golang-migrate/migrate/tree/v4.20.1> | <!-- renovate: datasource=github-releases depName=golang-migrate/migrate versioning=semver-coerced -->
+| golangci-lint | 2.13.2 | GPL-3.0-only | <https://github.com/golangci/golangci-lint/tree/v2.13.2> | <!-- renovate: datasource=github-releases depName=golangci/golangci-lint versioning=semver-coerced -->
+| wait4x | 3.7.1 | Apache-2.0 | <https://github.com/wait4x/wait4x/tree/v3.7.1> | <!-- renovate: datasource=github-releases depName=wait4x/wait4x versioning=semver-coerced -->
+| AWS CLI | 2.36.33 | Apache-2.0 and third-party notices | <https://github.com/aws/aws-cli/tree/2.36.33> | <!-- renovate: datasource=github-releases depName=aws/aws-cli versioning=semver-coerced -->
+| GitHub CLI | 2.100.0 | MIT | <https://github.com/cli/cli/tree/v2.100.0> | <!-- renovate: datasource=github-releases depName=cli/cli versioning=semver-coerced -->
+| pnpm | 12.4.1 | MIT | <https://github.com/pnpm/pnpm/tree/v12.4.1> | <!-- renovate: datasource=npm depName=pnpm -->
 
 ## AI agent CLIs
 
 | Component | Version | License | Corresponding source |
 | --- | --- | --- | --- |
-| Codex | 0.154.0 | Apache-2.0 and third-party notices | <https://github.com/openai/codex/tree/rust-v0.154.0> |
-| Grok Build | 1.0.30 | Apache-2.0 and third-party notices | <https://github.com/xai-org/grok-build> |
+| Codex | 0.154.0 | Apache-2.0 and third-party notices | <https://github.com/openai/codex/tree/rust-v0.154.0> | <!-- renovate: datasource=npm depName=@openai/codex -->
+| Grok Build | 1.0.30 | Apache-2.0 and third-party notices | <https://github.com/xai-org/grok-build> | <!-- renovate: datasource=npm depName=@xai-official/grok -->
 
 `golangci-lint` is distributed as an unmodified, separate GPL-3.0 program.
 Its exact Corresponding Source is available at the versioned URL above at no
