@@ -44,7 +44,7 @@ copyright notices for the directly redistributed MIT-licensed tools follow.
 | golangci-lint | 2.13.2 | GPL-3.0-only | <https://github.com/golangci/golangci-lint/tree/v2.13.2> | <!-- renovate: datasource=github-releases depName=golangci/golangci-lint versioning=semver-coerced -->
 | wait4x | 3.7.1 | Apache-2.0 | <https://github.com/wait4x/wait4x/tree/v3.7.1> | <!-- renovate: datasource=github-releases depName=wait4x/wait4x versioning=semver-coerced -->
 | AWS CLI | 2.36.33 | Apache-2.0 and third-party notices | <https://github.com/aws/aws-cli/tree/2.36.33> | <!-- renovate: datasource=github-releases depName=aws/aws-cli versioning=semver-coerced -->
-| GitHub CLI | 2.100.0 | MIT | <https://github.com/cli/cli/tree/v2.100.0> | <!-- renovate: datasource=github-releases depName=cli/cli versioning=semver-coerced -->
+| GitHub CLI | 2.101.0 | MIT | <https://github.com/cli/cli/tree/v2.101.0> | <!-- renovate: datasource=github-releases depName=cli/cli versioning=semver-coerced -->
 | pnpm | 12.4.1 | MIT | <https://github.com/pnpm/pnpm/tree/v12.4.1> | <!-- renovate: datasource=npm depName=pnpm -->
 
 ## AI agent CLIs
