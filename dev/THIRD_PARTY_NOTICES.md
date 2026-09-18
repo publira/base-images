@@ -43,7 +43,7 @@ copyright notices for the directly redistributed MIT-licensed tools follow.
 | golang-migrate | 4.20.1 | MIT | <https://github.com/golang-migrate/migrate/tree/v4.20.1> | <!-- renovate: datasource=github-releases depName=golang-migrate/migrate versioning=semver-coerced -->
 | golangci-lint | 2.13.2 | GPL-3.0-only | <https://github.com/golangci/golangci-lint/tree/v2.13.2> | <!-- renovate: datasource=github-releases depName=golangci/golangci-lint versioning=semver-coerced -->
 | ShellCheck | 0.11.0 | GPL-3.0-or-later | <https://github.com/koalaman/shellcheck/tree/v0.11.0> | <!-- renovate: datasource=github-releases depName=koalaman/shellcheck versioning=semver-coerced -->
-| shfmt | 3.14.0 | BSD-3-Clause | <https://github.com/mvdan/sh/tree/v3.14.0> | <!-- renovate: datasource=github-releases depName=mvdan/sh versioning=semver-coerced -->
+| shfmt | 3.14.1 | BSD-3-Clause | <https://github.com/mvdan/sh/tree/v3.14.1> | <!-- renovate: datasource=github-releases depName=mvdan/sh versioning=semver-coerced -->
 | wait4x | 3.7.1 | Apache-2.0 | <https://github.com/wait4x/wait4x/tree/v3.7.1> | <!-- renovate: datasource=github-releases depName=wait4x/wait4x versioning=semver-coerced -->
 | AWS CLI | 2.36.33 | Apache-2.0 and third-party notices | <https://github.com/aws/aws-cli/tree/2.36.33> | <!-- renovate: datasource=github-releases depName=aws/aws-cli versioning=semver-coerced -->
 | GitHub CLI | 2.101.0 | MIT | <https://github.com/cli/cli/tree/v2.101.0> | <!-- renovate: datasource=github-releases depName=cli/cli versioning=semver-coerced -->

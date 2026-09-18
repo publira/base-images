@@ -22,7 +22,7 @@ ARG GOLANGCI_LINT_VERSION=2.13.2
 # renovate: datasource=github-releases depName=koalaman/shellcheck versioning=semver-coerced
 ARG SHELLCHECK_VERSION=0.11.0
 # renovate: datasource=github-releases depName=mvdan/sh versioning=semver-coerced
-ARG SHFMT_VERSION=3.14.0
+ARG SHFMT_VERSION=3.14.1
 # renovate: datasource=github-releases depName=wait4x/wait4x versioning=semver-coerced
 ARG WAIT4X_VERSION=3.7.1
 # renovate: datasource=github-releases depName=aws/aws-cli versioning=semver-coerced
