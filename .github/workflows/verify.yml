@@ -10,7 +10,7 @@ permissions: {}
 jobs:
   shell:
     name: Check the shell scripts
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     permissions:
       contents: read
     steps:
@@ -51,7 +51,7 @@ jobs:
 
   compliance:
     name: Verify supply-chain metadata
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     permissions:
       contents: read
     steps:
