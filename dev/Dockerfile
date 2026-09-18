@@ -19,6 +19,10 @@ ARG BUF_VERSION=1.73.0
 ARG MIGRATE_VERSION=4.20.1
 # renovate: datasource=github-releases depName=golangci/golangci-lint versioning=semver-coerced
 ARG GOLANGCI_LINT_VERSION=2.13.2
+# renovate: datasource=github-releases depName=koalaman/shellcheck versioning=semver-coerced
+ARG SHELLCHECK_VERSION=0.11.0
+# renovate: datasource=github-releases depName=mvdan/sh versioning=semver-coerced
+ARG SHFMT_VERSION=3.14.0
 # renovate: datasource=github-releases depName=wait4x/wait4x versioning=semver-coerced
 ARG WAIT4X_VERSION=3.7.1
 # renovate: datasource=github-releases depName=aws/aws-cli versioning=semver-coerced
@@ -54,8 +58,8 @@ RUN set -eux; \
   sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d v${TASK_VERSION}; \
   arch="$(dpkg --print-architecture)"; \
   case "$arch" in \
-    amd64) sqlc_arch="amd64"; buf_arch="x86_64"; migrate_arch="amd64" ;; \
-    arm64) sqlc_arch="arm64"; buf_arch="aarch64"; migrate_arch="arm64" ;; \
+    amd64) sqlc_arch="amd64"; buf_arch="x86_64"; migrate_arch="amd64"; shellcheck_arch="x86_64" ;; \
+    arm64) sqlc_arch="arm64"; buf_arch="aarch64"; migrate_arch="arm64"; shellcheck_arch="aarch64" ;; \
     *) echo "Unsupported architecture: $arch"; exit 1 ;; \
   esac; \
   curl -fsSL "https://github.com/sqlc-dev/sqlc/releases/download/v${SQLC_VERSION}/sqlc_${SQLC_VERSION}_linux_${sqlc_arch}.tar.gz" \
@@ -75,6 +79,15 @@ RUN set -eux; \
     | tar -xz -C /tmp "${golangci_lint_dir}/golangci-lint"; \
   install -m 0755 "/tmp/${golangci_lint_dir}/golangci-lint" /usr/local/bin/golangci-lint; \
   rm -rf "/tmp/${golangci_lint_dir}"; \
+  shellcheck_dir="shellcheck-v${SHELLCHECK_VERSION}"; \
+  curl -fsSL "https://github.com/koalaman/shellcheck/releases/download/v${SHELLCHECK_VERSION}/${shellcheck_dir}.linux.${shellcheck_arch}.tar.xz" \
+    | tar -xJ -C /tmp "${shellcheck_dir}/shellcheck"; \
+  install -m 0755 "/tmp/${shellcheck_dir}/shellcheck" /usr/local/bin/shellcheck; \
+  rm -rf "/tmp/${shellcheck_dir}"; \
+  curl -fsSL "https://github.com/mvdan/sh/releases/download/v${SHFMT_VERSION}/shfmt_v${SHFMT_VERSION}_linux_${arch}" \
+    -o /tmp/shfmt; \
+  install -m 0755 /tmp/shfmt /usr/local/bin/shfmt; \
+  rm -f /tmp/shfmt; \
   wait4x_archive="wait4x-linux-${arch}.tar.gz"; \
   curl -fsSL "https://github.com/wait4x/wait4x/releases/download/v${WAIT4X_VERSION}/${wait4x_archive}" \
     -o "/tmp/${wait4x_archive}"; \
@@ -83,7 +96,9 @@ RUN set -eux; \
   (cd /tmp && sha256sum -c "${wait4x_archive}.sha256sum"); \
   tar -xzf "/tmp/${wait4x_archive}" -C /tmp wait4x; \
   install -m 0755 /tmp/wait4x /usr/local/bin/wait4x; \
-  rm -f "/tmp/${wait4x_archive}" "/tmp/${wait4x_archive}.sha256sum" /tmp/wait4x
+  rm -f "/tmp/${wait4x_archive}" "/tmp/${wait4x_archive}.sha256sum" /tmp/wait4x; \
+  shellcheck --version | grep --quiet --fixed-strings "version: ${SHELLCHECK_VERSION}"; \
+  test "$(shfmt --version)" = "v${SHFMT_VERSION}"
 
 # Install Flutter from its version tag rather than the x64-only SDK archive.
 # The Flutter tool downloads the architecture-specific Dart SDK when precached.

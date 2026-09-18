@@ -42,6 +42,8 @@ copyright notices for the directly redistributed MIT-licensed tools follow.
 | Buf | 1.73.0 | Apache-2.0 | <https://github.com/bufbuild/buf/tree/v1.73.0> | <!-- renovate: datasource=github-releases depName=bufbuild/buf versioning=semver-coerced -->
 | golang-migrate | 4.20.1 | MIT | <https://github.com/golang-migrate/migrate/tree/v4.20.1> | <!-- renovate: datasource=github-releases depName=golang-migrate/migrate versioning=semver-coerced -->
 | golangci-lint | 2.13.2 | GPL-3.0-only | <https://github.com/golangci/golangci-lint/tree/v2.13.2> | <!-- renovate: datasource=github-releases depName=golangci/golangci-lint versioning=semver-coerced -->
+| ShellCheck | 0.11.0 | GPL-3.0-or-later | <https://github.com/koalaman/shellcheck/tree/v0.11.0> | <!-- renovate: datasource=github-releases depName=koalaman/shellcheck versioning=semver-coerced -->
+| shfmt | 3.14.0 | BSD-3-Clause | <https://github.com/mvdan/sh/tree/v3.14.0> | <!-- renovate: datasource=github-releases depName=mvdan/sh versioning=semver-coerced -->
 | wait4x | 3.7.1 | Apache-2.0 | <https://github.com/wait4x/wait4x/tree/v3.7.1> | <!-- renovate: datasource=github-releases depName=wait4x/wait4x versioning=semver-coerced -->
 | AWS CLI | 2.36.33 | Apache-2.0 and third-party notices | <https://github.com/aws/aws-cli/tree/2.36.33> | <!-- renovate: datasource=github-releases depName=aws/aws-cli versioning=semver-coerced -->
 | GitHub CLI | 2.101.0 | MIT | <https://github.com/cli/cli/tree/v2.101.0> | <!-- renovate: datasource=github-releases depName=cli/cli versioning=semver-coerced -->
@@ -54,9 +56,9 @@ copyright notices for the directly redistributed MIT-licensed tools follow.
 | Codex | 0.154.0 | Apache-2.0 and third-party notices | <https://github.com/openai/codex/tree/rust-v0.154.0> | <!-- renovate: datasource=npm depName=@openai/codex -->
 | Grok Build | 1.0.32 | Apache-2.0 and third-party notices | <https://github.com/xai-org/grok-build> | <!-- renovate: datasource=npm depName=@xai-official/grok -->
 
-`golangci-lint` is distributed as an unmodified, separate GPL-3.0 program.
-Its exact Corresponding Source is available at the versioned URL above at no
-charge. A copy of that source is also published beside the image as
+`golangci-lint` and ShellCheck are distributed as unmodified, separate GPL-3.0
+programs. Their exact Corresponding Source is available at the versioned URLs
+above at no charge. A copy of that source is also published beside the image as
 `ghcr.io/publira/base-images/publira-dev-corresponding-source`, tagged exactly
 like the image version it belongs to, so it remains available on equivalent
 terms for as long as that image version is offered.
