@@ -61,6 +61,15 @@ After changing `.devcontainer/`, validate the resolved configuration:
 npx --yes @devcontainers/cli read-configuration --workspace-folder .
 ```
 
+After changing a shell script, lint and format-check it with the ShellCheck and
+shfmt versions that `dev/Dockerfile` pins. The `Verify` workflow reads the same
+versions, and shfmt takes its style from `.editorconfig`, so pass it no flags:
+
+```sh
+shellcheck $(shfmt --find .)
+shfmt --diff .
+```
+
 After changing an image, its third-party manifest, or the workflows, run the
 supply-chain checks:
 

@@ -81,7 +81,7 @@ index="${output}/CORRESPONDING_SOURCE.md"
   fi
   printf '| Component | Version | License | Upstream tag | Commit | Archive | SHA-256 |\n'
   printf '| --- | --- | --- | --- | --- | --- | --- |\n'
-} > "$index"
+} >"$index"
 
 collected=0
 
@@ -110,12 +110,12 @@ while IFS=$'\t' read -r component build_arg license repository tag_template; do
   curl --fail --silent --show-error --location \
     --output "${output}/${archive}" \
     "${repository}/archive/refs/tags/${tag}.tar.gz"
-  tar --list --file "${output}/${archive}" > /dev/null
+  tar --list --file "${output}/${archive}" >/dev/null
 
   checksum="$(cd "$output" && sha256sum "$archive" | cut -d ' ' -f 1)"
   # shellcheck disable=SC2016 # The backticks are Markdown, not a subshell.
   printf '| %s | %s | %s | `%s` | `%s` | `%s` | `%s` |\n' \
-    "$component" "$version" "$license" "$tag" "$commit" "$archive" "$checksum" >> "$index"
+    "$component" "$version" "$license" "$tag" "$commit" "$archive" "$checksum" >>"$index"
   collected=$((collected + 1))
 done < <(
   jq -r '
