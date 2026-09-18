@@ -8,6 +8,47 @@ on:
 permissions: {}
 
 jobs:
+  shell:
+    name: Check the shell scripts
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # The versions come from the development image rather than a second pin,
+      # so Renovate updates one place and the image and this check agree.
+      - name: Install ShellCheck and shfmt
+        run: |
+          set -euo pipefail
+          shellcheck_version="$(sed -n 's/^ARG SHELLCHECK_VERSION=//p' dev/Dockerfile)"
+          shfmt_version="$(sed -n 's/^ARG SHFMT_VERSION=//p' dev/Dockerfile)"
+          test -n "$shellcheck_version"
+          test -n "$shfmt_version"
+          bin="${RUNNER_TEMP}/bin"
+          mkdir -p "$bin"
+          curl -fsSL "https://github.com/koalaman/shellcheck/releases/download/v${shellcheck_version}/shellcheck-v${shellcheck_version}.linux.x86_64.tar.xz" \
+            | tar -xJ -C "$bin" --strip-components=1 "shellcheck-v${shellcheck_version}/shellcheck"
+          curl -fsSL "https://github.com/mvdan/sh/releases/download/v${shfmt_version}/shfmt_v${shfmt_version}_linux_amd64" \
+            -o "${bin}/shfmt"
+          chmod 0755 "${bin}/shfmt"
+          "${bin}/shellcheck" --version | grep --quiet --fixed-strings "version: ${shellcheck_version}"
+          test "$("${bin}/shfmt" --version)" = "v${shfmt_version}"
+          printf '%s\n' "$bin" >>"$GITHUB_PATH"
+
+      - name: Run ShellCheck
+        run: |
+          mapfile -t scripts < <(shfmt --find .)
+          shellcheck "${scripts[@]}"
+
+      # The style lives in .editorconfig, which shfmt only reads when it is
+      # given no formatting flags.
+      - name: Check the formatting with shfmt
+        run: shfmt --diff .
+
   compliance:
     name: Verify supply-chain metadata
     runs-on: ubuntu-24.04
@@ -18,9 +59,6 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-
-      - name: Check the scripts
-        run: shellcheck scripts/*.sh
 
       - name: Check that Renovate covers every pinned version
         run: ./scripts/check-renovate-coverage.sh

@@ -1,0 +1,12 @@
+root = true
+
+[*]
+indent_style = space
+indent_size = 2
+
+# shfmt reads these, so editors, the Dev Container, and the Verify workflow
+# format shell scripts the same way without passing flags.
+[*.sh]
+switch_case_indent = true
+binary_next_line = true
+space_redirects = false
