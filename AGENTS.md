@@ -33,9 +33,9 @@ written in English.
 - Describe every redistributed tool in `<image>/third-party.json`. The build
   argument, license, and upstream source location live there, and
   `THIRD_PARTY_NOTICES.md` and the image copy are updated in the same change.
-  `golangci-lint` is GPL-3.0: retain its license text, keep a precise
-  Corresponding Source URL, and keep `correspondingSource` set so the
-  publishing workflow mirrors its source beside the image.
+  `golangci-lint` and ShellCheck are GPL-3.0: retain the license text, keep a
+  precise Corresponding Source URL, and keep `correspondingSource` set so the
+  publishing workflow mirrors their source beside the image.
 - The three tables in `<image>/THIRD_PARTY_NOTICES.md` are generated from that
   manifest and the Dockerfile. Run
   `./scripts/check-third-party-notices.sh --write` instead of editing a row by

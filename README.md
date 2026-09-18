@@ -9,6 +9,8 @@ This project is licensed under the [Apache License 2.0](LICENSE).
 
 - Go development environment, Flutter SDK, PostgreSQL and Valkey clients, and
   the Go CLIs used by the project
+- ShellCheck and shfmt for the shell scripts in Taskfiles, lifecycle hooks, and
+  CI helpers
 - Node.js with a preinstalled pnpm, AWS CLI, GitHub CLI, Codex, and Grok Build
 
 Every tool is installed directly by

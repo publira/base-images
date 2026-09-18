@@ -72,6 +72,24 @@
     "correspondingSource": true
   },
   {
+    "component": "ShellCheck",
+    "buildArg": "SHELLCHECK_VERSION",
+    "section": "Command-line tools",
+    "license": "GPL-3.0-or-later",
+    "sourceRepository": "https://github.com/koalaman/shellcheck",
+    "sourceTag": "v{version}",
+    "correspondingSource": true
+  },
+  {
+    "component": "shfmt",
+    "buildArg": "SHFMT_VERSION",
+    "section": "Command-line tools",
+    "license": "BSD-3-Clause",
+    "sourceRepository": "https://github.com/mvdan/sh",
+    "sourceTag": "v{version}",
+    "correspondingSource": false
+  },
+  {
     "component": "wait4x",
     "buildArg": "WAIT4X_VERSION",
     "section": "Command-line tools",
