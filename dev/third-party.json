@@ -90,6 +90,15 @@
     "correspondingSource": false
   },
   {
+    "component": "actionlint",
+    "buildArg": "ACTIONLINT_VERSION",
+    "section": "Command-line tools",
+    "license": "MIT",
+    "sourceRepository": "https://github.com/rhysd/actionlint",
+    "sourceTag": "v{version}",
+    "correspondingSource": false
+  },
+  {
     "component": "wait4x",
     "buildArg": "WAIT4X_VERSION",
     "section": "Command-line tools",

@@ -23,6 +23,8 @@ ARG GOLANGCI_LINT_VERSION=2.14.0
 ARG SHELLCHECK_VERSION=0.11.0
 # renovate: datasource=github-releases depName=mvdan/sh versioning=semver-coerced
 ARG SHFMT_VERSION=3.14.1
+# renovate: datasource=github-releases depName=rhysd/actionlint versioning=semver-coerced
+ARG ACTIONLINT_VERSION=1.7.12
 # renovate: datasource=github-releases depName=wait4x/wait4x versioning=semver-coerced
 ARG WAIT4X_VERSION=3.7.1
 # renovate: datasource=github-releases depName=aws/aws-cli versioning=semver-coerced
@@ -88,6 +90,15 @@ RUN set -eux; \
     -o /tmp/shfmt; \
   install -m 0755 /tmp/shfmt /usr/local/bin/shfmt; \
   rm -f /tmp/shfmt; \
+  actionlint_archive="actionlint_${ACTIONLINT_VERSION}_linux_${arch}.tar.gz"; \
+  curl -fsSL "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/${actionlint_archive}" \
+    -o "/tmp/${actionlint_archive}"; \
+  curl -fsSL "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/actionlint_${ACTIONLINT_VERSION}_checksums.txt" \
+    -o /tmp/actionlint_checksums.txt; \
+  (cd /tmp && grep --fixed-strings "  ${actionlint_archive}" actionlint_checksums.txt | sha256sum -c -); \
+  tar -xzf "/tmp/${actionlint_archive}" -C /tmp actionlint; \
+  install -m 0755 /tmp/actionlint /usr/local/bin/actionlint; \
+  rm -f "/tmp/${actionlint_archive}" /tmp/actionlint_checksums.txt /tmp/actionlint; \
   wait4x_archive="wait4x-linux-${arch}.tar.gz"; \
   curl -fsSL "https://github.com/wait4x/wait4x/releases/download/v${WAIT4X_VERSION}/${wait4x_archive}" \
     -o "/tmp/${wait4x_archive}"; \
@@ -98,7 +109,8 @@ RUN set -eux; \
   install -m 0755 /tmp/wait4x /usr/local/bin/wait4x; \
   rm -f "/tmp/${wait4x_archive}" "/tmp/${wait4x_archive}.sha256sum" /tmp/wait4x; \
   shellcheck --version | grep --quiet --fixed-strings "version: ${SHELLCHECK_VERSION}"; \
-  test "$(shfmt --version)" = "v${SHFMT_VERSION}"
+  test "$(shfmt --version)" = "v${SHFMT_VERSION}"; \
+  actionlint --version | head -n 1 | grep --quiet --line-regexp --fixed-strings "${ACTIONLINT_VERSION}"
 
 # Install Flutter from its version tag rather than the x64-only SDK archive.
 # The Flutter tool downloads the architecture-specific Dart SDK when precached.
