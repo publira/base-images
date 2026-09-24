@@ -11,6 +11,7 @@ This project is licensed under the [Apache License 2.0](LICENSE).
   the Go CLIs used by the project
 - ShellCheck and shfmt for the shell scripts in Taskfiles, lifecycle hooks, and
   CI helpers
+- actionlint for GitHub Actions workflows
 - Node.js with a preinstalled pnpm, AWS CLI, GitHub CLI, Codex, and Grok Build
 
 Every tool is installed directly by
