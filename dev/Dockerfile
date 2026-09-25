@@ -26,7 +26,7 @@ ARG SHFMT_VERSION=3.14.1
 # renovate: datasource=github-releases depName=rhysd/actionlint versioning=semver-coerced
 ARG ACTIONLINT_VERSION=1.7.12
 # renovate: datasource=github-releases depName=wait4x/wait4x versioning=semver-coerced
-ARG WAIT4X_VERSION=3.7.1
+ARG WAIT4X_VERSION=3.7.2
 # renovate: datasource=github-tags depName=aws/aws-cli versioning=semver-coerced
 ARG AWS_CLI_VERSION=2.37.2
 # renovate: datasource=github-releases depName=cli/cli versioning=semver-coerced
