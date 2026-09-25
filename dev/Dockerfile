@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/devcontainers/base:2-trixie@sha256:1f851004adcd3dff3776b4
 
 # Foundational languages and frameworks
 # renovate: datasource=golang-version depName=go
-ARG GO_VERSION=1.27.0
+ARG GO_VERSION=1.27.1
 # renovate: datasource=flutter-version depName=flutter
 ARG FLUTTER_VERSION=3.47.5
 # renovate: datasource=node-version depName=node
