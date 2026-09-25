@@ -1,7 +1,7 @@
 FROM mcr.microsoft.com/devcontainers/base:2-trixie@sha256:1f851004adcd3dff3776b4a1da86727cf52280b0fdc9d5b0568c9c7d74274286
 
 # Foundational languages and frameworks
-# renovate: datasource=github-releases depName=golang/go versioning=semver-coerced
+# renovate: datasource=golang-version depName=go
 ARG GO_VERSION=1.27.0
 # renovate: datasource=flutter-version depName=flutter
 ARG FLUTTER_VERSION=3.47.5
@@ -27,7 +27,7 @@ ARG SHFMT_VERSION=3.14.1
 ARG ACTIONLINT_VERSION=1.7.12
 # renovate: datasource=github-releases depName=wait4x/wait4x versioning=semver-coerced
 ARG WAIT4X_VERSION=3.7.1
-# renovate: datasource=github-releases depName=aws/aws-cli versioning=semver-coerced
+# renovate: datasource=github-tags depName=aws/aws-cli versioning=semver-coerced
 ARG AWS_CLI_VERSION=2.36.33
 # renovate: datasource=github-releases depName=cli/cli versioning=semver-coerced
 ARG GITHUB_CLI_VERSION=2.101.0
