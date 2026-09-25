@@ -28,7 +28,7 @@ ARG ACTIONLINT_VERSION=1.7.12
 # renovate: datasource=github-releases depName=wait4x/wait4x versioning=semver-coerced
 ARG WAIT4X_VERSION=3.7.2
 # renovate: datasource=github-tags depName=aws/aws-cli versioning=semver-coerced
-ARG AWS_CLI_VERSION=2.37.3
+ARG AWS_CLI_VERSION=2.37.4
 # renovate: datasource=github-releases depName=cli/cli versioning=semver-coerced
 ARG GITHUB_CLI_VERSION=2.101.0
 # renovate: datasource=npm depName=pnpm
