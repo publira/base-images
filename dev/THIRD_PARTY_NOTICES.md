@@ -47,7 +47,7 @@ copyright notices for the directly redistributed MIT-licensed tools follow.
 | shfmt | 3.14.1 | BSD-3-Clause | <https://github.com/mvdan/sh/tree/v3.14.1> | <!-- renovate: datasource=github-releases depName=mvdan/sh versioning=semver-coerced -->
 | actionlint | 1.7.12 | MIT | <https://github.com/rhysd/actionlint/tree/v1.7.12> | <!-- renovate: datasource=github-releases depName=rhysd/actionlint versioning=semver-coerced -->
 | wait4x | 3.7.2 | Apache-2.0 | <https://github.com/wait4x/wait4x/tree/v3.7.2> | <!-- renovate: datasource=github-releases depName=wait4x/wait4x versioning=semver-coerced -->
-| AWS CLI | 2.37.2 | Apache-2.0 and third-party notices | <https://github.com/aws/aws-cli/tree/2.37.2> | <!-- renovate: datasource=github-tags depName=aws/aws-cli versioning=semver-coerced -->
+| AWS CLI | 2.37.3 | Apache-2.0 and third-party notices | <https://github.com/aws/aws-cli/tree/2.37.3> | <!-- renovate: datasource=github-tags depName=aws/aws-cli versioning=semver-coerced -->
 | GitHub CLI | 2.101.0 | MIT | <https://github.com/cli/cli/tree/v2.101.0> | <!-- renovate: datasource=github-releases depName=cli/cli versioning=semver-coerced -->
 | pnpm | 12.5.1 | MIT | <https://github.com/pnpm/pnpm/tree/v12.5.1> | <!-- renovate: datasource=npm depName=pnpm -->
 
