@@ -32,7 +32,7 @@ ARG AWS_CLI_VERSION=2.37.4
 # renovate: datasource=github-releases depName=cli/cli versioning=semver-coerced
 ARG GITHUB_CLI_VERSION=2.101.0
 # renovate: datasource=npm depName=pnpm
-ARG PNPM_VERSION=12.5.1
+ARG PNPM_VERSION=12.6.0
 
 # AI agent CLIs
 # renovate: datasource=npm depName=@openai/codex
