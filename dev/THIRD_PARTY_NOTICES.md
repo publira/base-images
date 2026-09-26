@@ -49,7 +49,7 @@ copyright notices for the directly redistributed MIT-licensed tools follow.
 | wait4x | 3.7.2 | Apache-2.0 | <https://github.com/wait4x/wait4x/tree/v3.7.2> | <!-- renovate: datasource=github-releases depName=wait4x/wait4x versioning=semver-coerced -->
 | AWS CLI | 2.37.4 | Apache-2.0 and third-party notices | <https://github.com/aws/aws-cli/tree/2.37.4> | <!-- renovate: datasource=github-tags depName=aws/aws-cli versioning=semver-coerced -->
 | GitHub CLI | 2.101.0 | MIT | <https://github.com/cli/cli/tree/v2.101.0> | <!-- renovate: datasource=github-releases depName=cli/cli versioning=semver-coerced -->
-| pnpm | 12.5.1 | MIT | <https://github.com/pnpm/pnpm/tree/v12.5.1> | <!-- renovate: datasource=npm depName=pnpm -->
+| pnpm | 12.6.0 | MIT | <https://github.com/pnpm/pnpm/tree/v12.6.0> | <!-- renovate: datasource=npm depName=pnpm -->
 
 ## AI agent CLIs
 
