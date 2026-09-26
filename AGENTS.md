@@ -98,6 +98,8 @@ the row is generated, so it cannot drift; keep it on every row, which
 
 `Verify` stays a required part of every pull request: the rows Renovate writes
 are checked against the manifest and the Dockerfile like any other change.
+`main` is behind a merge queue that requires the same check on the group it
+builds, so `verify.yml` subscribes to `merge_group` as well as `pull_request`.
 
 ## Publishing
 
