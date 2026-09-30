@@ -1,6 +1,15 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   extends: ["github>publira/.github//renovate.json5"],
+  customDatasources: {
+    // The CLI's release manifest; it names only the current release. The
+    // container images on gcr.io are published days after the release archive
+    // the Dockerfile downloads, so they would hold the update back.
+    "google-cloud-cli": {
+      defaultRegistryUrlTemplate: "https://dl.google.com/dl/cloudsdk/channels/rapid/components-2.json",
+      transformTemplates: ['{ "releases": [ { "version": version } ] }'],
+    },
+  },
   customManagers: [
     {
       customType: "regex",

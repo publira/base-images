@@ -121,7 +121,9 @@ components="$(
           version: $version,
           annotation: $argument.annotation,
           source: (
-            if $component.sourceTag == null then
+            if $component.sourceArchive != null then
+              ($component.sourceArchive | sub("\\{version\\}"; $version))
+            elif $component.sourceTag == null then
               $component.sourceRepository
             else
               "\($component.sourceRepository)/tree/\($component.sourceTag | sub("\\{version\\}"; $version))"
@@ -238,15 +240,32 @@ elif ! grep --quiet --fixed-strings "$base_image" "$notices"; then
 fi
 
 if [ "$verify_sources" = true ]; then
-  while IFS=$'\t' read -r component repository tag; do
-    if [ "$tag" = "null" ]; then
+  # A component without a public repository names the versioned release
+  # archive its source ships in instead, which only has to be downloadable.
+  while IFS=$'\t' read -r component repository tag archive; do
+    if [ "$archive" != "null" ]; then
+      if ! curl --fail --silent --show-error --location --head --output /dev/null "$archive"; then
+        fail "the source archive for $component is unavailable: $archive"
+      fi
+    elif [ "$tag" = "null" ]; then
       if [ -z "$(git ls-remote "$repository" HEAD)" ]; then
         fail "the source repository for $component is unavailable: $repository"
       fi
     elif [ -z "$(git ls-remote --tags "$repository" "refs/tags/${tag}")" ]; then
       fail "the source location for $component is unavailable: ${repository} ${tag}"
     fi
-  done < <(jq -r '.[] | [.component, .sourceRepository, (.tag // "null")] | @tsv' <<<"$components")
+  done < <(
+    jq -r '
+      .[]
+      | [
+          .component,
+          (.sourceRepository // "null"),
+          (.tag // "null"),
+          (if .sourceArchive == null then "null" else .source end)
+        ]
+      | @tsv
+    ' <<<"$components"
+  )
 fi
 
 if [ "$failures" -gt 0 ]; then
