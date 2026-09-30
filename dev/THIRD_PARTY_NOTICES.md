@@ -48,6 +48,7 @@ copyright notices for the directly redistributed MIT-licensed tools follow.
 | actionlint | 1.7.12 | MIT | <https://github.com/rhysd/actionlint/tree/v1.7.12> | <!-- renovate: datasource=github-releases depName=rhysd/actionlint versioning=semver-coerced -->
 | wait4x | 3.7.2 | Apache-2.0 | <https://github.com/wait4x/wait4x/tree/v3.7.2> | <!-- renovate: datasource=github-releases depName=wait4x/wait4x versioning=semver-coerced -->
 | AWS CLI | 2.37.6 | Apache-2.0 and third-party notices | <https://github.com/aws/aws-cli/tree/2.37.6> | <!-- renovate: datasource=github-tags depName=aws/aws-cli versioning=semver-coerced -->
+| Google Cloud CLI | 587.0.0 | Apache-2.0 and third-party notices | <https://storage.googleapis.com/cloud-sdk-release/google-cloud-cli-587.0.0-linux-arm.tar.gz> | <!-- renovate: datasource=custom.google-cloud-cli depName=google-cloud-cli -->
 | GitHub CLI | 2.102.0 | MIT | <https://github.com/cli/cli/tree/v2.102.0> | <!-- renovate: datasource=github-releases depName=cli/cli versioning=semver-coerced -->
 | pnpm | 12.7.0 | MIT | <https://github.com/pnpm/pnpm/tree/v12.7.0> | <!-- renovate: datasource=npm depName=pnpm -->
 
@@ -64,3 +65,10 @@ above at no charge. A copy of that source is also published beside the image as
 `ghcr.io/publira/base-images/publira-dev-corresponding-source`, tagged exactly
 like the image version it belongs to, so it remains available on equivalent
 terms for as long as that image version is offered.
+
+The Google Cloud CLI has no public source repository. Its Python source ships
+in Google's versioned release archive, linked above. The Python source is the
+same in the archive for each architecture; only the prebuilt helpers differ.
+The license files of its bundled third-party code are kept under
+`/usr/local/google-cloud-sdk`. The image removes the Python interpreter bundled
+in the x86_64 archive and runs the CLI on Debian's `python3` instead.

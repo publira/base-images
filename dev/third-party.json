@@ -117,6 +117,16 @@
     "correspondingSource": false
   },
   {
+    "component": "Google Cloud CLI",
+    "buildArg": "GCLOUD_VERSION",
+    "section": "Command-line tools",
+    "license": "Apache-2.0 and third-party notices",
+    "sourceRepository": null,
+    "sourceTag": null,
+    "sourceArchive": "https://storage.googleapis.com/cloud-sdk-release/google-cloud-cli-{version}-linux-arm.tar.gz",
+    "correspondingSource": false
+  },
+  {
     "component": "GitHub CLI",
     "buildArg": "GITHUB_CLI_VERSION",
     "section": "Command-line tools",

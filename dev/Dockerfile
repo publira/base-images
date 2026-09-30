@@ -29,6 +29,8 @@ ARG ACTIONLINT_VERSION=1.7.12
 ARG WAIT4X_VERSION=3.7.2
 # renovate: datasource=github-tags depName=aws/aws-cli versioning=semver-coerced
 ARG AWS_CLI_VERSION=2.37.6
+# renovate: datasource=custom.google-cloud-cli depName=google-cloud-cli
+ARG GCLOUD_VERSION=587.0.0
 # renovate: datasource=github-releases depName=cli/cli versioning=semver-coerced
 ARG GITHUB_CLI_VERSION=2.102.0
 # renovate: datasource=npm depName=pnpm
@@ -42,7 +44,7 @@ ARG GROK_VERSION=1.0.42
 
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
  && apt-get -y install --no-install-recommends postgresql-client valkey-tools \
-    clang cmake ninja-build pkg-config libgtk-3-dev libvips-dev unzip xz-utils
+    clang cmake ninja-build pkg-config libgtk-3-dev libvips-dev unzip xz-utils python3
 
 RUN set -eux; \
   arch="$(dpkg --print-architecture)"; \
@@ -141,6 +143,38 @@ RUN set -eux; \
   gh --version; \
   node --version; \
   go version
+
+# The Google Cloud CLI runs on Debian's Python rather than on the interpreter
+# bundled with the x86_64 archive. That interpreter statically links Berkeley
+# DB 6, which is AGPL-3.0 and ships without its source, and the arm archive has
+# no bundled interpreter at all, so removing it gives both architectures the
+# same runtime. The component manager is disabled, as in Google's own Debian
+# package, so the pinned version is the one that runs.
+ENV CLOUDSDK_PYTHON=/usr/bin/python3
+RUN set -eux; \
+  arch="$(dpkg --print-architecture)"; \
+  case "$arch" in \
+    amd64) gcloud_arch="x86_64" ;; \
+    arm64) gcloud_arch="arm" ;; \
+    *) echo "Unsupported architecture: $arch"; exit 1 ;; \
+  esac; \
+  gcloud_root=/usr/local/google-cloud-sdk; \
+  curl -fsSL "https://storage.googleapis.com/cloud-sdk-release/google-cloud-cli-${GCLOUD_VERSION}-linux-${gcloud_arch}.tar.gz" \
+    | tar -xz -C /usr/local; \
+  rm -rf "${gcloud_root}/platform/bundledpythonunix" \
+    "${gcloud_root}"/.install/bundled-python3-unix*; \
+  sed -i 's/"disable_updater": false/"disable_updater": true/' \
+    "${gcloud_root}/lib/googlecloudsdk/core/config.json"; \
+  grep --quiet --fixed-strings '"disable_updater": true' \
+    "${gcloud_root}/lib/googlecloudsdk/core/config.json"; \
+  printf '\n[component_manager]\ndisable_update_check = True\n' >>"${gcloud_root}/properties"; \
+  for command in gcloud gsutil bq; do \
+    ln -sf "${gcloud_root}/bin/${command}" "/usr/local/bin/${command}"; \
+  done; \
+  gcloud version | head -n 1 | grep --quiet --line-regexp --fixed-strings "Google Cloud SDK ${GCLOUD_VERSION}"; \
+  test "$(gcloud config get core/disable_usage_reporting 2>/dev/null)" = "True"; \
+  gsutil version; \
+  bq version
 
 # pnpm is installed with its own POSIX installer rather than through Corepack
 # or npm, so the pinned version is present without a network round trip on
