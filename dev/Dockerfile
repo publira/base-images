@@ -30,7 +30,7 @@ ARG WAIT4X_VERSION=3.7.2
 # renovate: datasource=github-tags depName=aws/aws-cli versioning=semver-coerced
 ARG AWS_CLI_VERSION=2.37.6
 # renovate: datasource=github-releases depName=cli/cli versioning=semver-coerced
-ARG GITHUB_CLI_VERSION=2.101.0
+ARG GITHUB_CLI_VERSION=2.102.0
 # renovate: datasource=npm depName=pnpm
 ARG PNPM_VERSION=12.7.0
 
