@@ -38,7 +38,7 @@ copyright notices for the directly redistributed MIT-licensed tools follow.
 
 | Component | Version | License | Corresponding source |
 | --- | --- | --- | --- |
-| Task | 3.53.1 | MIT | <https://github.com/go-task/task/tree/v3.53.1> | <!-- renovate: datasource=github-releases depName=go-task/task versioning=semver-coerced -->
+| Task | 3.54.0 | MIT | <https://github.com/go-task/task/tree/v3.54.0> | <!-- renovate: datasource=github-releases depName=go-task/task versioning=semver-coerced -->
 | sqlc | 1.31.1 | MIT | <https://github.com/sqlc-dev/sqlc/tree/v1.31.1> | <!-- renovate: datasource=github-releases depName=sqlc-dev/sqlc versioning=semver-coerced -->
 | Buf | 1.73.0 | Apache-2.0 | <https://github.com/bufbuild/buf/tree/v1.73.0> | <!-- renovate: datasource=github-releases depName=bufbuild/buf versioning=semver-coerced -->
 | golang-migrate | 4.20.1 | MIT | <https://github.com/golang-migrate/migrate/tree/v4.20.1> | <!-- renovate: datasource=github-releases depName=golang-migrate/migrate versioning=semver-coerced -->
