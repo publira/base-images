@@ -56,7 +56,7 @@ copyright notices for the directly redistributed MIT-licensed tools follow.
 
 | Component | Version | License | Corresponding source |
 | --- | --- | --- | --- |
-| Codex | 0.159.0 | Apache-2.0 and third-party notices | <https://github.com/openai/codex/tree/rust-v0.159.0> | <!-- renovate: datasource=npm depName=@openai/codex -->
+| Codex | 0.159.2 | Apache-2.0 and third-party notices | <https://github.com/openai/codex/tree/rust-v0.159.2> | <!-- renovate: datasource=npm depName=@openai/codex -->
 | Grok Build | 1.0.45 | Apache-2.0 and third-party notices | <https://github.com/xai-org/grok-build> | <!-- renovate: datasource=npm depName=@xai-official/grok -->
 
 `golangci-lint` and ShellCheck are distributed as unmodified, separate GPL-3.0
