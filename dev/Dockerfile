@@ -38,7 +38,7 @@ ARG PNPM_VERSION=12.8.2
 
 # AI agent CLIs
 # renovate: datasource=npm depName=@openai/codex
-ARG CODEX_VERSION=0.159.3
+ARG CODEX_VERSION=0.160.0
 # renovate: datasource=npm depName=@xai-official/grok
 ARG GROK_VERSION=1.0.46
 
