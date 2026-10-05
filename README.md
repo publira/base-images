@@ -112,4 +112,6 @@ Versions are declared as Dockerfile build arguments and maintained by Renovate.
 
 This repository includes a lightweight Dev Container based on the standard
 `devcontainers/base` Trixie image. It adds Docker-in-Docker without Moby so
-contributors can build and test the images locally.
+contributors can build and test the images locally. The inner Docker daemon
+caps its build cache at 20 GB, and each start removes images older than a week
+that no container uses, so repeated image builds do not fill the host disk.

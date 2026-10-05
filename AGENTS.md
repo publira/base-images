@@ -47,6 +47,9 @@ The repository's own Dev Container is intentionally lightweight. It uses the
 Trixie `devcontainers/base` image and applies Docker-in-Docker with `moby`
 disabled, because Moby does not support Trixie.
 
+The inner `dockerd` is configured by `.devcontainer/daemon.json`. Set build
+cache age limits with an `unused-for` filter; `keepDuration` is ignored.
+
 ## Verification
 
 After changing an image definition, run:
