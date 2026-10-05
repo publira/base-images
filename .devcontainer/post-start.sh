@@ -1,13 +1,6 @@
 #!/usr/bin/env bash
-# Prune old images from the inner Docker daemon on every start.
-#
-# Docker Engine never removes unused images, so the daemon's volumes would grow
-# until the host disk fills. With the containerd image store, `until` compares
-# against when the image was pulled or built here, not its upstream creation
-# date. An image that any container uses, running or stopped, is always kept.
-#
-# The docker-in-docker feature starts dockerd in the background, so it may not
-# answer yet. Wait for it for a bounded time and never fail the start.
+# Prune unused images older than a week. dockerd may still be starting, so wait
+# briefly and never fail the container start.
 
 set -uo pipefail
 
