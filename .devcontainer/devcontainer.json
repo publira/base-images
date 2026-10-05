@@ -6,5 +6,9 @@
       "moby": false,
       "version": "29.3.1"
     }
-  }
+  },
+  "mounts": [
+    "source=${localWorkspaceFolder}/.devcontainer/daemon.json,target=/etc/docker/daemon.json,type=bind,readonly"
+  ],
+  "postStartCommand": ".devcontainer/post-start.sh"
 }

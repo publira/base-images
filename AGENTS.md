@@ -47,6 +47,13 @@ The repository's own Dev Container is intentionally lightweight. It uses the
 Trixie `devcontainers/base` image and applies Docker-in-Docker with `moby`
 disabled, because Moby does not support Trixie.
 
+The feature starts the inner `dockerd` with flags only, so its whole
+configuration is `.devcontainer/daemon.json`, bind-mounted to
+`/etc/docker/daemon.json`. That file caps the BuildKit cache; a build cache
+rule takes its age limit from an `unused-for` filter, because `daemon.json`
+silently ignores a `keepDuration` key. `.devcontainer/post-start.sh` prunes old
+unused images on every start and must never fail it.
+
 ## Verification
 
 After changing an image definition, run:
