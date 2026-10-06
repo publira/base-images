@@ -34,7 +34,7 @@ ARG GCLOUD_VERSION=587.0.0
 # renovate: datasource=github-releases depName=cli/cli versioning=semver-coerced
 ARG GITHUB_CLI_VERSION=2.102.0
 # renovate: datasource=npm depName=pnpm
-ARG PNPM_VERSION=12.8.2
+ARG PNPM_VERSION=12.9.0
 
 # AI agent CLIs
 # renovate: datasource=npm depName=@openai/codex
