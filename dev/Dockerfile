@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/devcontainers/base:2-trixie@sha256:1f851004adcd3dff3776b4a1da86727cf52280b0fdc9d5b0568c9c7d74274286
+FROM mcr.microsoft.com/devcontainers/base:2-trixie@sha256:c6b8c3c79b7378399a84f9f7b2bbff460b59ccc5594eba14131f48bdf6adaa92
 
 # Foundational languages and frameworks
 # renovate: datasource=golang-version depName=go
