@@ -28,7 +28,7 @@ ARG ACTIONLINT_VERSION=1.7.12
 # renovate: datasource=github-releases depName=wait4x/wait4x versioning=semver-coerced
 ARG WAIT4X_VERSION=3.7.2
 # renovate: datasource=github-tags depName=aws/aws-cli versioning=semver-coerced
-ARG AWS_CLI_VERSION=2.37.10
+ARG AWS_CLI_VERSION=2.37.11
 # renovate: datasource=custom.google-cloud-cli depName=google-cloud-cli
 ARG GCLOUD_VERSION=588.0.0
 # renovate: datasource=github-releases depName=cli/cli versioning=semver-coerced
