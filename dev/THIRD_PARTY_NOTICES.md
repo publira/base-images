@@ -21,7 +21,8 @@ copyright notices for the directly redistributed MIT-licensed tools follow.
 
 ## Base image and operating-system packages
 
-- `mcr.microsoft.com/devcontainers/base:2-trixie` is built from
+- `mcr.microsoft.com/devcontainers/base`, in the Trixie variant that
+  `Dockerfile` pins, is built from
   [devcontainers/images](https://github.com/devcontainers/images) (MIT).
 - Debian Trixie and the packages installed with `apt` are subject to their
   individual copyright and license notices under `/usr/share/doc`.
