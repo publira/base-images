@@ -5,6 +5,9 @@
 Repository documentation, comments, commit messages, and pull request text are
 written in English.
 
+Reply to the user in the language they write in. The English rule above covers
+only what is committed to the repository or posted to GitHub.
+
 ## Git and pull requests
 
 - Commit subjects and pull request titles use English Conventional Commits
