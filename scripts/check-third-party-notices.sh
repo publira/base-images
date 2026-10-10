@@ -232,7 +232,10 @@ for license_file in "${image_directory}"/licenses/*.txt; do
 done
 
 # The notices name the base image, which is pinned by digest in the Dockerfile.
+# They name it without its tag, which carries the full version and is updated
+# by Renovate in the Dockerfile alone.
 base_image="$(sed -n 's|^FROM \([^@ ]*\)@.*|\1|p' "$dockerfile" | head -n 1)"
+base_image="${base_image%:*}"
 if [ -z "$base_image" ]; then
   fail "$dockerfile does not pin its base image by digest"
 elif ! grep --quiet --fixed-strings "$base_image" "$notices"; then
