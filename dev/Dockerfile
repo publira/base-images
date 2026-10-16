@@ -18,7 +18,7 @@ ARG BUF_VERSION=1.74.0
 # renovate: datasource=github-releases depName=golang-migrate/migrate versioning=semver-coerced
 ARG MIGRATE_VERSION=4.20.1
 # renovate: datasource=github-releases depName=golangci/golangci-lint versioning=semver-coerced
-ARG GOLANGCI_LINT_VERSION=2.14.0
+ARG GOLANGCI_LINT_VERSION=2.15.0
 # renovate: datasource=github-releases depName=koalaman/shellcheck versioning=semver-coerced
 ARG SHELLCHECK_VERSION=0.11.0
 # renovate: datasource=github-releases depName=mvdan/sh versioning=semver-coerced
