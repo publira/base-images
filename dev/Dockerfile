@@ -6,7 +6,7 @@ ARG GO_VERSION=1.27.3
 # renovate: datasource=flutter-version depName=flutter
 ARG FLUTTER_VERSION=3.47.7
 # renovate: datasource=node-version depName=node
-ARG NODE_VERSION=24.22.0
+ARG NODE_VERSION=24.22.1
 
 # CLI tools
 # renovate: datasource=github-releases depName=go-task/task versioning=semver-coerced
