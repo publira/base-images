@@ -30,7 +30,7 @@ ARG WAIT4X_VERSION=3.7.2
 # renovate: datasource=github-tags depName=aws/aws-cli versioning=semver-coerced
 ARG AWS_CLI_VERSION=2.38.5
 # renovate: datasource=custom.google-cloud-cli depName=google-cloud-cli
-ARG GCLOUD_VERSION=590.0.0
+ARG GCLOUD_VERSION=590.0.1
 # renovate: datasource=github-releases depName=cli/cli versioning=semver-coerced
 ARG GITHUB_CLI_VERSION=2.103.0
 # renovate: datasource=npm depName=pnpm
