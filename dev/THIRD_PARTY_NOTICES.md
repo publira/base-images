@@ -51,7 +51,7 @@ copyright notices for the directly redistributed MIT-licensed tools follow.
 | AWS CLI | 2.38.5 | Apache-2.0 and third-party notices | <https://github.com/aws/aws-cli/tree/2.38.5> | <!-- renovate: datasource=github-tags depName=aws/aws-cli versioning=semver-coerced -->
 | Google Cloud CLI | 590.0.1 | Apache-2.0 and third-party notices | <https://storage.googleapis.com/cloud-sdk-release/google-cloud-cli-590.0.1-linux-arm.tar.gz> | <!-- renovate: datasource=custom.google-cloud-cli depName=google-cloud-cli -->
 | GitHub CLI | 2.103.2 | MIT | <https://github.com/cli/cli/tree/v2.103.2> | <!-- renovate: datasource=github-releases depName=cli/cli versioning=semver-coerced -->
-| pnpm | 12.14.0 | MIT | <https://github.com/pnpm/pnpm/tree/v12.14.0> | <!-- renovate: datasource=npm depName=pnpm -->
+| pnpm | 12.15.0 | MIT | <https://github.com/pnpm/pnpm/tree/v12.15.0> | <!-- renovate: datasource=npm depName=pnpm -->
 
 ## AI agent CLIs
 
