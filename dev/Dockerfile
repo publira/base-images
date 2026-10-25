@@ -42,9 +42,13 @@ ARG CODEX_VERSION=0.163.0
 # renovate: datasource=npm depName=@xai-official/grok
 ARG GROK_VERSION=1.0.67
 
+# libvips-dev brings libheif with its decoder plugins only. The aomenc plugin
+# lets libvips encode AVIF, which publira server's image delivery serves to
+# every current browser, as the production publira image does.
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
  && apt-get -y install --no-install-recommends postgresql-client valkey-tools \
-    clang cmake ninja-build pkg-config libgtk-3-dev libvips-dev unzip xz-utils python3
+    clang cmake ninja-build pkg-config libgtk-3-dev libvips-dev \
+    libheif-plugin-aomenc unzip xz-utils python3
 
 RUN set -eux; \
   arch="$(dpkg --print-architecture)"; \
