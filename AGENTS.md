@@ -124,3 +124,7 @@ the Corresponding Source of its copyleft components under a matching
 steps when changing the workflow. A weekly schedule republishes every image
 without the layer cache; that cache-free rebuild is what delivers upstream
 operating-system updates, so keep it intact.
+
+## Skill packages
+
+Entries in `.agents/skills/*` listed in `skills-lock.json` are vendored: `npx skills` overwrites them, and the maintenance bot in `publira/agents` runs `npx skills update -p -y` weekly and opens a pull request when there is a diff. Do not edit them; a patch is lost at the next update. Reading them for reference is fine. When this repository's policy and a skill disagree, this file wins. `.claude/skills/*` reaches the same skills through relative symlinks.
