@@ -30,6 +30,7 @@ jobs:
   prepare:
     name: Prepare publication
     runs-on: ubuntu-26.04
+    timeout-minutes: 5
     permissions: {}
     outputs:
       date: ${{ steps.tags.outputs.date }}
@@ -60,6 +61,10 @@ jobs:
     name: Build ${{ matrix.image }} (${{ matrix.platform }})
     needs: prepare
     runs-on: ${{ matrix.runner }}
+    # The weekly cache-free rebuild takes about ten minutes and the longest
+    # observed build sixteen, so a stalled push or upstream mirror fails here
+    # instead of holding the runner for the six-hour default.
+    timeout-minutes: 30
     permissions:
       contents: read
       packages: write
@@ -135,6 +140,7 @@ jobs:
     name: Publish ${{ matrix.image }} manifest
     needs: [prepare, build]
     runs-on: ubuntu-26.04
+    timeout-minutes: 10
     permissions:
       attestations: write
       contents: read
@@ -241,6 +247,7 @@ jobs:
     name: Publish ${{ matrix.image }} Corresponding Source
     needs: [prepare, merge]
     runs-on: ubuntu-26.04
+    timeout-minutes: 10
     permissions:
       contents: read
       packages: write
@@ -311,6 +318,7 @@ jobs:
     name: Verify ${{ matrix.image }} pull (${{ matrix.platform }})
     needs: [prepare, merge]
     runs-on: ${{ matrix.runner }}
+    timeout-minutes: 10
     permissions:
       packages: read
     strategy:

@@ -113,6 +113,9 @@ The publishing workflow builds every matrix entry as a multi-platform
 (`linux/amd64`, `linux/arm64`) manifest. It publishes `latest`, a UTC date tag,
 a date-and-run-number tag. Keep all of these tags and the per-image cache scope
 when changing the workflow. Give each job only the permissions it needs.
+Every job in `.github/workflows/` sets `timeout-minutes`, so a hung job fails
+within minutes instead of holding a runner for the 6-hour default. Give a new
+job one as well, sized to its longest observed run with headroom.
 
 Every image is published with per-platform SLSA provenance and SPDX SBOM
 attestations, with GitHub build provenance for the merged manifest, and with
