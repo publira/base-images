@@ -1,8 +1,16 @@
 root = true
 
 [*]
+charset = utf-8
+end_of_line = lf
 indent_style = space
 indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# A Markdown hard line break is two trailing spaces, so keep them.
+[*.md]
+trim_trailing_whitespace = false
 
 # shfmt reads these, so editors, the Dev Container, and the Verify workflow
 # format shell scripts the same way without passing flags.
