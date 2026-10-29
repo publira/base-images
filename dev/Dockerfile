@@ -4,7 +4,7 @@ FROM mcr.microsoft.com/devcontainers/base:2.2.5-trixie@sha256:71b6fe7c4e07ec747a
 # renovate: datasource=golang-version depName=go
 ARG GO_VERSION=1.27.3
 # renovate: datasource=flutter-version depName=flutter
-ARG FLUTTER_VERSION=3.47.8
+ARG FLUTTER_VERSION=3.47.9
 # renovate: datasource=node-version depName=node
 ARG NODE_VERSION=26.13.0
 
