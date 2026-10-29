@@ -13,6 +13,7 @@ jobs:
   shell:
     name: Check the shell scripts
     runs-on: ubuntu-26.04
+    timeout-minutes: 5
     permissions:
       contents: read
     steps:
@@ -54,6 +55,7 @@ jobs:
   compliance:
     name: Verify supply-chain metadata
     runs-on: ubuntu-26.04
+    timeout-minutes: 10
     permissions:
       contents: read
     steps:
