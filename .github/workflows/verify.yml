@@ -70,7 +70,7 @@ jobs:
       - name: Validate the Renovate configuration
         env:
           # renovate: datasource=npm depName=renovate
-          RENOVATE_VERSION: 44.178.5
+          RENOVATE_VERSION: 44.198.0
         run: |
           npx --yes --package "renovate@${RENOVATE_VERSION}" -- renovate-config-validator
 
