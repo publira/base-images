@@ -40,7 +40,7 @@ ARG PNPM_VERSION=12.17.0
 # renovate: datasource=npm depName=@openai/codex
 ARG CODEX_VERSION=0.166.0
 # renovate: datasource=npm depName=@xai-official/grok
-ARG GROK_VERSION=1.0.70
+ARG GROK_VERSION=1.0.73
 
 # libvips-dev brings libheif with its decoder plugins only. The aomenc plugin
 # lets libvips encode AVIF, which publira server's image delivery serves to
