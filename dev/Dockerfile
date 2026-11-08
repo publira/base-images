@@ -27,6 +27,10 @@ ARG SHFMT_VERSION=3.14.1
 ARG ACTIONLINT_VERSION=1.7.12
 # renovate: datasource=github-releases depName=wait4x/wait4x versioning=semver-coerced
 ARG WAIT4X_VERSION=3.7.3
+# renovate: datasource=github-releases depName=aquasecurity/trivy versioning=semver-coerced
+ARG TRIVY_VERSION=0.76.2
+# renovate: datasource=github-releases depName=google/osv-scanner versioning=semver-coerced
+ARG OSV_SCANNER_VERSION=2.7.0
 # renovate: datasource=github-tags depName=aws/aws-cli versioning=semver-coerced
 ARG AWS_CLI_VERSION=2.39.6
 # renovate: datasource=custom.google-cloud-cli depName=google-cloud-cli
@@ -66,8 +70,8 @@ RUN set -eux; \
   sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d v${TASK_VERSION}; \
   arch="$(dpkg --print-architecture)"; \
   case "$arch" in \
-    amd64) sqlc_arch="amd64"; buf_arch="x86_64"; migrate_arch="amd64"; shellcheck_arch="x86_64" ;; \
-    arm64) sqlc_arch="arm64"; buf_arch="aarch64"; migrate_arch="arm64"; shellcheck_arch="aarch64" ;; \
+    amd64) sqlc_arch="amd64"; buf_arch="x86_64"; migrate_arch="amd64"; shellcheck_arch="x86_64"; trivy_arch="64bit" ;; \
+    arm64) sqlc_arch="arm64"; buf_arch="aarch64"; migrate_arch="arm64"; shellcheck_arch="aarch64"; trivy_arch="ARM64" ;; \
     *) echo "Unsupported architecture: $arch"; exit 1 ;; \
   esac; \
   curl -fsSL "https://github.com/sqlc-dev/sqlc/releases/download/v${SQLC_VERSION}/sqlc_${SQLC_VERSION}_linux_${sqlc_arch}.tar.gz" \
@@ -114,9 +118,28 @@ RUN set -eux; \
   tar -xzf "/tmp/${wait4x_archive}" -C /tmp wait4x; \
   install -m 0755 /tmp/wait4x /usr/local/bin/wait4x; \
   rm -f "/tmp/${wait4x_archive}" "/tmp/${wait4x_archive}.sha256sum" /tmp/wait4x; \
+  trivy_archive="trivy_${TRIVY_VERSION}_Linux-${trivy_arch}.tar.gz"; \
+  curl -fsSL "https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/${trivy_archive}" \
+    -o "/tmp/${trivy_archive}"; \
+  curl -fsSL "https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_checksums.txt" \
+    -o /tmp/trivy_checksums.txt; \
+  (cd /tmp && grep --fixed-strings "  ${trivy_archive}" trivy_checksums.txt | sha256sum -c -); \
+  tar -xzf "/tmp/${trivy_archive}" -C /tmp trivy; \
+  install -m 0755 /tmp/trivy /usr/local/bin/trivy; \
+  rm -f "/tmp/${trivy_archive}" /tmp/trivy_checksums.txt /tmp/trivy; \
+  osv_scanner_binary="osv-scanner_linux_${arch}"; \
+  curl -fsSL "https://github.com/google/osv-scanner/releases/download/v${OSV_SCANNER_VERSION}/${osv_scanner_binary}" \
+    -o "/tmp/${osv_scanner_binary}"; \
+  curl -fsSL "https://github.com/google/osv-scanner/releases/download/v${OSV_SCANNER_VERSION}/osv-scanner_SHA256SUMS" \
+    -o /tmp/osv-scanner_SHA256SUMS; \
+  (cd /tmp && grep --fixed-strings "  ${osv_scanner_binary}" osv-scanner_SHA256SUMS | sha256sum -c -); \
+  install -m 0755 "/tmp/${osv_scanner_binary}" /usr/local/bin/osv-scanner; \
+  rm -f "/tmp/${osv_scanner_binary}" /tmp/osv-scanner_SHA256SUMS; \
   shellcheck --version | grep --quiet --fixed-strings "version: ${SHELLCHECK_VERSION}"; \
   test "$(shfmt --version)" = "v${SHFMT_VERSION}"; \
-  actionlint --version | head -n 1 | grep --quiet --line-regexp --fixed-strings "${ACTIONLINT_VERSION}"
+  actionlint --version | head -n 1 | grep --quiet --line-regexp --fixed-strings "${ACTIONLINT_VERSION}"; \
+  trivy --version | head -n 1 | grep --quiet --line-regexp --fixed-strings "Version: ${TRIVY_VERSION}"; \
+  osv-scanner --version | head -n 1 | grep --quiet --line-regexp --fixed-strings "osv-scanner version: ${OSV_SCANNER_VERSION}"
 
 # Install Flutter from its version tag rather than the x64-only SDK archive.
 # The Flutter tool downloads the architecture-specific Dart SDK when precached.

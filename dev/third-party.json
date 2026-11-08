@@ -108,6 +108,24 @@
     "correspondingSource": false
   },
   {
+    "component": "Trivy",
+    "buildArg": "TRIVY_VERSION",
+    "section": "Command-line tools",
+    "license": "Apache-2.0",
+    "sourceRepository": "https://github.com/aquasecurity/trivy",
+    "sourceTag": "v{version}",
+    "correspondingSource": false
+  },
+  {
+    "component": "OSV-Scanner",
+    "buildArg": "OSV_SCANNER_VERSION",
+    "section": "Command-line tools",
+    "license": "Apache-2.0",
+    "sourceRepository": "https://github.com/google/osv-scanner",
+    "sourceTag": "v{version}",
+    "correspondingSource": false
+  },
+  {
     "component": "AWS CLI",
     "buildArg": "AWS_CLI_VERSION",
     "section": "Command-line tools",
