@@ -30,7 +30,7 @@ ARG WAIT4X_VERSION=3.7.3
 # renovate: datasource=github-releases depName=aquasecurity/trivy versioning=semver-coerced
 ARG TRIVY_VERSION=0.76.2
 # renovate: datasource=github-releases depName=google/osv-scanner versioning=semver-coerced
-ARG OSV_SCANNER_VERSION=2.7.0
+ARG OSV_SCANNER_VERSION=2.7.1
 # renovate: datasource=github-tags depName=aws/aws-cli versioning=semver-coerced
 ARG AWS_CLI_VERSION=2.39.6
 # renovate: datasource=custom.google-cloud-cli depName=google-cloud-cli
