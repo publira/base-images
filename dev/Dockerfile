@@ -34,7 +34,7 @@ ARG OSV_SCANNER_VERSION=2.7.1
 # renovate: datasource=github-tags depName=aws/aws-cli versioning=semver-coerced
 ARG AWS_CLI_VERSION=2.40.1
 # renovate: datasource=custom.google-cloud-cli depName=google-cloud-cli
-ARG GCLOUD_VERSION=592.0.0
+ARG GCLOUD_VERSION=593.0.0
 # renovate: datasource=github-releases depName=cli/cli versioning=semver-coerced
 ARG GITHUB_CLI_VERSION=2.103.3
 # renovate: datasource=npm depName=pnpm
