@@ -32,7 +32,7 @@ copyright notices for the directly redistributed MIT-licensed tools follow.
 | Component | Version | License | Corresponding source |
 | --- | --- | --- | --- |
 | Go | 1.27.4 | BSD-3-Clause | <https://github.com/golang/go/tree/go1.27.4> | <!-- renovate: datasource=golang-version depName=go -->
-| Flutter | 3.47.9 | BSD-3-Clause | <https://github.com/flutter/flutter/tree/3.47.9> | <!-- renovate: datasource=flutter-version depName=flutter -->
+| Flutter | 3.50.0 | BSD-3-Clause | <https://github.com/flutter/flutter/tree/3.50.0> | <!-- renovate: datasource=flutter-version depName=flutter -->
 | Node.js | 26.13.1 | MIT and third-party notices | <https://github.com/nodejs/node/tree/v26.13.1> | <!-- renovate: datasource=node-version depName=node -->
 
 ## Command-line tools
