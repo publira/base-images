@@ -36,7 +36,7 @@ ARG AWS_CLI_VERSION=2.41.0
 # renovate: datasource=custom.google-cloud-cli depName=google-cloud-cli
 ARG GCLOUD_VERSION=593.0.0
 # renovate: datasource=github-releases depName=cli/cli versioning=semver-coerced
-ARG GITHUB_CLI_VERSION=2.104.0
+ARG GITHUB_CLI_VERSION=2.105.0
 # renovate: datasource=npm depName=pnpm
 ARG PNPM_VERSION=12.21.0
 
