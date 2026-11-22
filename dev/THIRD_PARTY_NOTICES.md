@@ -51,7 +51,7 @@ copyright notices for the directly redistributed MIT-licensed tools follow.
 | Trivy | 0.76.2 | Apache-2.0 | <https://github.com/aquasecurity/trivy/tree/v0.76.2> | <!-- renovate: datasource=github-releases depName=aquasecurity/trivy versioning=semver-coerced -->
 | OSV-Scanner | 2.7.1 | Apache-2.0 | <https://github.com/google/osv-scanner/tree/v2.7.1> | <!-- renovate: datasource=github-releases depName=google/osv-scanner versioning=semver-coerced -->
 | AWS CLI | 2.42.1 | Apache-2.0 and third-party notices | <https://github.com/aws/aws-cli/tree/2.42.1> | <!-- renovate: datasource=github-tags depName=aws/aws-cli versioning=semver-coerced -->
-| Google Cloud CLI | 594.0.0 | Apache-2.0 and third-party notices | <https://storage.googleapis.com/cloud-sdk-release/google-cloud-cli-594.0.0-linux-arm.tar.gz> | <!-- renovate: datasource=custom.google-cloud-cli depName=google-cloud-cli -->
+| Google Cloud CLI | 594.0.1 | Apache-2.0 and third-party notices | <https://storage.googleapis.com/cloud-sdk-release/google-cloud-cli-594.0.1-linux-arm.tar.gz> | <!-- renovate: datasource=custom.google-cloud-cli depName=google-cloud-cli -->
 | GitHub CLI | 2.105.0 | MIT | <https://github.com/cli/cli/tree/v2.105.0> | <!-- renovate: datasource=github-releases depName=cli/cli versioning=semver-coerced -->
 | pnpm | 12.21.0 | MIT | <https://github.com/pnpm/pnpm/tree/v12.21.0> | <!-- renovate: datasource=npm depName=pnpm -->
 
